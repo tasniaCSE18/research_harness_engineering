@@ -1,11 +1,20 @@
-"""Generate result-analysis figures for harness_paper.tex from results.json.
+"""Generate result-analysis figures for harness_paper.tex.
+
+Two kinds of figures, kept clearly separate:
+  (1) our own pilot data (results.json, n=3) -- honestly small, captioned as such
+  (2) literature-grounded comparison figures -- numbers taken from published
+      papers (see LIT_* constants below, each with its bibliography key),
+      used to give the pilot external context rather than present it in
+      isolation. These are NOT reruns of our pipeline; the literature bars
+      are drawn from other authors' own (larger) evaluations.
 
 Figures (saved to ../fig/):
-  fig_harness_pipeline.png   - variant A/B/C architecture diagram (methodology)
-  fig_metric_comparison.png  - grouped bar: field-exact / field-F1 / doc-full per variant
-  fig_calibration.png        - reliability diagram (confidence vs accuracy) for B/C + ECE gap
-  fig_cost_accuracy.png      - calls/doc vs field-exact accuracy trade-off
-  fig_error_by_field.png     - per-field error breakdown for variant C
+  fig_harness_pipeline.png        - variant A/B/C architecture diagram (methodology)
+  fig_benchmark_comparison.png    - [lit] SROIE/receipt extraction: published baselines vs. our pilot
+  fig_ece_literature_context.png  - [lit] our ECE vs. published self-consistency ECE values
+  fig_selfcorrection_literature.png - [lit] accuracy delta from correction: intrinsic vs oracle-guided vs ours
+  fig_calibration.png             - [ours] reliability diagram (confidence vs accuracy), n=3
+  fig_error_by_field.png          - [ours] per-field error breakdown, n=3
 
 Run: venv/bin/python research/make_figures.py
 """
@@ -41,6 +50,40 @@ plt.rcParams.update({
 })
 
 COLORS = {"A": "#4C72B0", "B": "#DD8452", "C": "#55A868"}
+LIT_COLOR = "#8172B2"   # published/external results
+OURS_COLOR = "#55A868"  # our own pilot
+
+# --- literature values used only for external-context figures --------------
+# Each entry cites the bibliography key used in harness_paper.tex.
+LIT_BENCHMARKS = [
+    # (label, metric_name, value_pct, bib_key)
+    ("LayoutLM\n(fine-tuned)", "F1", 95.24, "b8"),
+    ("LayoutLMv2\n(fine-tuned)", "F1", 97.81, "b9"),
+    ("Ours\n(pilot, n=3)", "F1", 98.3, None),
+    ("Gemini VLM\n(prompted)", "Accuracy", 87.46, "b10"),
+    ("Ours\n(pilot, n=3)", "Exact", 83.3, None),
+]
+
+# Self-consistency ECE values reported by Ma et al. 2024 (b11), plus the
+# p(True) single-sample baseline they compare against, and our own ECE.
+LIT_ECE_POINTS = [
+    ("Mistral-7B / GSM8K\nself-consistency", 0.092, "b11"),
+    ("Mixtral-8x7B / GSM8K\nself-consistency", 0.075, "b11"),
+    ("Mistral-7B / MathQA\nself-consistency", 0.091, "b11"),
+    ("Mistral-7B / GSM8K\np(True) baseline", 0.127, "b11"),
+    ("Mixtral-8x7B / GSM8K\np(True) baseline", 0.195, "b11"),
+    ("Mistral-7B / MathQA\np(True) baseline", 0.350, "b11"),
+]
+
+# Huang et al. 2024 (b3) self-correction accuracy deltas (percentage points).
+LIT_SELFCORRECT = [
+    ("GSM8K\nGPT-3.5", -1.2, "intrinsic"),
+    ("CommonSenseQA\nGPT-3.5", -34.0, "intrinsic"),
+    ("GSM8K\nGPT-4", -6.5, "intrinsic"),
+    ("GSM8K\nGPT-3.5", 8.4, "oracle"),
+    ("CommonSenseQA\nGPT-3.5", 13.9, "oracle"),
+    ("Receipts\n(n=3)", 0.0, "ours"),
+]
 
 
 def load():
@@ -145,28 +188,119 @@ def fig_pipeline():
 
 
 # ---------------------------------------------------------------- fig 2 ---
-def fig_metric_comparison(table):
-    variants = ["A", "B", "C"]
-    metrics = ["field_exact", "field_f1", "doc_full"]
-    labels = ["Field Exact", "Field F1", "Doc Full"]
-    x = np.arange(len(metrics))
-    width = 0.25
+def fig_benchmark_comparison():
+    """[literature] SROIE / receipt key-value extraction: published baselines
+    vs. our pilot. Bars are drawn from other authors' own evaluations
+    (LayoutLM/LayoutLMv2 on SROIE Task 3, a prompted-Gemini receipt-extraction
+    study) plus our pilot's F1/exact-match -- kept visually distinct (hatched)
+    since it is a 3-document pilot, not a comparable-scale rerun."""
+    labels = [l for l, *_ in LIT_BENCHMARKS]
+    metrics = [m for _, m, *_ in LIT_BENCHMARKS]
+    vals = [v for _, _, v, _ in LIT_BENCHMARKS]
+    is_ours = [lab.startswith("Ours") for lab in labels]
 
-    fig, ax = plt.subplots(figsize=(5.0, 3.4))
-    for i, v in enumerate(variants):
-        vals = [table[v][m] for m in metrics]
-        bars = ax.bar(x + (i - 1) * width, vals, width, label=f"Variant {v}", color=COLORS[v])
-        for b, val in zip(bars, vals):
-            ax.text(b.get_x() + b.get_width() / 2, val + 0.015, f"{val:.3f}",
-                    ha="center", va="bottom", fontsize=7.5, rotation=0)
+    fig, ax = plt.subplots(figsize=(6.2, 3.6))
+    x = np.arange(len(labels))
+    colors = [OURS_COLOR if o else LIT_COLOR for o in is_ours]
+    bars = ax.bar(x, vals, color=colors, edgecolor="black", linewidth=0.7)
+    for b, o in zip(bars, is_ours):
+        if o:
+            b.set_hatch("//")
+    for b, v, m in zip(bars, vals, metrics):
+        ax.text(b.get_x() + b.get_width() / 2, v + 1.0, f"{v:.2f}\n({m})",
+                ha="center", va="bottom", fontsize=7.3)
     ax.set_xticks(x)
-    ax.set_xticklabels(labels)
-    ax.set_ylabel("Score")
-    ax.set_ylim(0, 1.15)
-    ax.set_title("Reliability metrics across harness variants (pilot)")
-    ax.legend(loc="lower right", fontsize=8)
+    ax.set_xticklabels(labels, fontsize=7.8)
+    ax.set_ylabel("Score (%)")
+    ax.set_ylim(0, 112)
+    ax.set_title("SROIE / receipt extraction: published baselines vs. our pilot")
+    handles = [mpatches.Patch(facecolor=LIT_COLOR, edgecolor="black", label="Published (larger-scale) results"),
+               mpatches.Patch(facecolor=OURS_COLOR, edgecolor="black", hatch="//", label="Ours (pilot, n=3)")]
+    ax.legend(handles=handles, loc="lower center", fontsize=7.5, ncol=1)
     ax.grid(axis="y", linestyle="--", alpha=0.4)
-    fig.savefig(FIG_DIR / "fig_metric_comparison.png")
+    fig.savefig(FIG_DIR / "fig_benchmark_comparison.png")
+    plt.close(fig)
+
+
+def fig_ece_literature_context():
+    """[literature] Our ECE vs. published self-consistency ECE values (and
+    their p(True) baselines) from Ma et al. 2024 (b11)."""
+    labels = [l for l, *_ in LIT_ECE_POINTS]
+    vals = [v for _, v, _ in LIT_ECE_POINTS]
+    is_baseline = ["p(True)" in l for l in labels]
+    all_labels = labels + ["Ours: Variant C\nself-consistency (n=3)"]
+    all_vals = vals + [0.277]
+    all_ours = is_baseline + [False]  # reuse for coloring; recompute below
+
+    fig, ax = plt.subplots(figsize=(6.0, 3.6))
+    y = np.arange(len(all_labels))
+    colors = []
+    for i, lab in enumerate(all_labels):
+        if lab.startswith("Ours"):
+            colors.append(OURS_COLOR)
+        elif "p(True)" in lab:
+            colors.append("#C44E52")
+        else:
+            colors.append(LIT_COLOR)
+    bars = ax.barh(y, all_vals, color=colors, edgecolor="black", linewidth=0.7)
+    for b, v in zip(bars, all_vals):
+        ax.text(v + 0.005, b.get_y() + b.get_height() / 2, f"{v:.3f}",
+                va="center", fontsize=7.5)
+    ax.set_yticks(y)
+    ax.set_yticklabels(all_labels, fontsize=7.5)
+    ax.invert_yaxis()
+    ax.set_xlabel("Expected Calibration Error (lower = better calibrated)")
+    ax.set_title("Self-consistency ECE: literature range vs. our pilot")
+    handles = [mpatches.Patch(facecolor=LIT_COLOR, edgecolor="black", label="Self-consistency confidence (lit.)"),
+               mpatches.Patch(facecolor="#C44E52", edgecolor="black", label="p(True) single-sample baseline (lit.)"),
+               mpatches.Patch(facecolor=OURS_COLOR, edgecolor="black", label="Ours (pilot, n=3)")]
+    ax.legend(handles=handles, loc="lower right", fontsize=6.8)
+    ax.grid(axis="x", linestyle="--", alpha=0.4)
+    fig.savefig(FIG_DIR / "fig_ece_literature_context.png")
+    plt.close(fig)
+
+
+def fig_selfcorrection_literature():
+    """[literature] Accuracy delta (percentage points) from a self-correction
+    call: intrinsic (unguided) vs. oracle-guided (Huang et al. 2024, b3),
+    vs. our confidence-gated targeted correction."""
+    labels = [l for l, *_ in LIT_SELFCORRECT]
+    vals = [v for _, v, _ in LIT_SELFCORRECT]
+    kinds = [k for *_, k in LIT_SELFCORRECT]
+    color_map = {"intrinsic": "#C44E52", "oracle": LIT_COLOR, "ours": OURS_COLOR}
+    colors = [color_map[k] for k in kinds]
+
+    fig, ax = plt.subplots(figsize=(6.2, 3.8))
+    x = np.arange(len(labels))
+    bars = ax.bar(x, vals, color=colors, edgecolor="black", linewidth=0.7)
+    for k, b in zip(kinds, bars):
+        if k == "ours":
+            b.set_hatch("//")
+    ax.axhline(0, color="black", linewidth=0.8)
+    for b, v in zip(bars, vals):
+        va = "bottom" if v >= 0 else "top"
+        off = 0.8 if v >= 0 else -0.8
+        ax.text(b.get_x() + b.get_width() / 2, v + off, f"{v:+.1f}",
+                ha="center", va=va, fontsize=8)
+    ax.set_xticks(x)
+    ax.set_xticklabels(labels, fontsize=8)
+    ax.set_ylabel("Accuracy change from correction (pp)")
+    ax.set_title("Self-correction effect: intrinsic vs. oracle-guided vs. ours")
+    ax.set_ylim(-40, 24)
+    group_x = {"intrinsic": np.mean([0, 1, 2]), "oracle": np.mean([3, 4]), "ours": 5}
+    group_label = {"intrinsic": "Intrinsic (unguided)", "oracle": "Oracle-guided", "ours": "Ours"}
+    seen = set()
+    for k in kinds:
+        if k in seen:
+            continue
+        seen.add(k)
+        ax.text(group_x[k], 20, group_label[k], ha="center", fontsize=7.5, style="italic")
+    handles = [mpatches.Patch(facecolor="#C44E52", edgecolor="black", label="Intrinsic / unguided (Huang et al. 2024)"),
+               mpatches.Patch(facecolor=LIT_COLOR, edgecolor="black", label="Oracle-guided (Huang et al. 2024)"),
+               mpatches.Patch(facecolor=OURS_COLOR, edgecolor="black", hatch="//", label="Ours: confidence-gated targeted (n=3)")]
+    ax.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, -0.15), fontsize=7.3, ncol=1)
+    ax.grid(axis="y", linestyle="--", alpha=0.4)
+    fig.savefig(FIG_DIR / "fig_selfcorrection_literature.png")
     plt.close(fig)
 
 
@@ -198,29 +332,6 @@ def fig_calibration(bn, ba, bc, bins):
     plt.close(fig)
 
 
-# ---------------------------------------------------------------- fig 4 ---
-def fig_cost_accuracy(table):
-    variants = ["A", "B", "C"]
-    calls = [table[v]["calls_per_doc"] for v in variants]
-    acc = [table[v]["field_exact"] for v in variants]
-
-    fig, ax = plt.subplots(figsize=(4.8, 3.6))
-    y_offsets = {"A": (0, 18), "B": (0, 18), "C": (0, -22)}
-    for v, c, a in zip(variants, calls, acc):
-        ax.scatter(c, a, s=220, color=COLORS[v], edgecolor="black", zorder=3)
-        ax.annotate(f"{v} ({c:.1f} calls/doc)", (c, a), textcoords="offset points",
-                    xytext=y_offsets[v], fontsize=8.5, fontweight="bold", ha="center")
-    ax.plot(calls, acc, linestyle=":", color="gray", zorder=1)
-    ax.set_xlabel("Model calls per document")
-    ax.set_ylabel("Field-level exact match")
-    ax.set_title("Cost vs. accuracy across harness variants")
-    ax.set_xlim(0, max(calls) + 2.0)
-    ax.set_ylim(0.78, 0.92)
-    ax.grid(alpha=0.3)
-    fig.savefig(FIG_DIR / "fig_cost_accuracy.png")
-    plt.close(fig)
-
-
 # ---------------------------------------------------------------- fig 5 ---
 def fig_error_by_field(records):
     err = Counter()
@@ -246,14 +357,13 @@ def fig_error_by_field(records):
 def main():
     res = json.loads((BASE / "outputs" / "results.json").read_text())
     records = res["records"]
-    n_samples = res["config"].get("n_samples", 3)
-    table = compute_table(records, n_samples)
     bn, ba, bc, bins = compute_calibration(records)
 
     fig_pipeline()
-    fig_metric_comparison(table)
+    fig_benchmark_comparison()
+    fig_ece_literature_context()
+    fig_selfcorrection_literature()
     fig_calibration(bn, ba, bc, bins)
-    fig_cost_accuracy(table)
     fig_error_by_field(records)
 
     print("Wrote figures to", FIG_DIR)
