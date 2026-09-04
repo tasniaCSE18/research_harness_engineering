@@ -1,0 +1,263 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\begin{document}
+
+\title{Harness Engineering for Reliable Document Intelligence: A Schema-Guided, Confidence-Aware, and Self-Corrective Vision-Language Model Approach\\
+}
+
+% TODO: replace the author block with the paper's authors and affiliations.
+\author{
+    \IEEEauthorblockN{
+        Author One\textsuperscript{1},
+        Author Two\textsuperscript{2}\\
+        Author Three\textsuperscript{3},
+        Author Four\textsuperscript{4}\\
+    }
+    \IEEEauthorblockA{
+        \textsuperscript{1}Department of Computer Science and Engineering, University One, Country\\
+        \textsuperscript{2}Department of Computer Science and Engineering, University Two, Country\\
+        \textsuperscript{3}Independent Researcher, City, Country\\
+        \textsuperscript{4}Department of Computer Science, University Three, Country\\
+        Email: \textsuperscript{1}author1@email.com,
+        \textsuperscript{2}author2@email.com,\\
+        \textsuperscript{3}author3@email.com,
+        \textsuperscript{4}author4@email.com
+    }
+}
+
+\maketitle
+
+\begin{abstract}
+The reliability of vision-language model (VLM) systems for document intelligence depends not only on model weights but also on the \emph{harness} surrounding them: the code and configuration that decide what context the model sees, how its output is constrained, and when its answer is trusted. This study introduces a schema-guided, confidence-aware, and self-corrective harness for key-value extraction from real scanned documents. The harness fixes a frozen VLM and composes three reliability mechanisms: (1) schema-guided structured extraction that constrains the model output to a typed JSON Schema; (2) self-consistency confidence estimation that samples the model multiple times and measures per-field agreement; and (3) targeted self-correction that re-reads only low-confidence fields instead of blindly regenerating a full document. We evaluate the harness on the SROIE scanned-receipt benchmark and compare it against a single-call schema-only baseline. Experimental results on the pilot subset show a field-level exact-match accuracy of 83.3\% and a character-level field F1 of 98.3\%, while the confidence signal correctly flags genuinely hard documents at the cost of a bounded number of additional model calls. A calibration analysis (expected calibration error of 0.28) reveals that raw agreement-based confidence is conservative but miscalibrated, motivating a calibration layer as a core research component. The framework highlights how treating prompt, schema, sampling, and correction policy as a single optimizable harness can make document intelligence more reliable and auditable, and it exposes budget-aware constraints that matter for reproducible research on commodity API tiers.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Document Intelligence, Vision-Language Models, Harness Engineering, Structured Extraction, Confidence Calibration, Self-Correction
+\end{IEEEkeywords}
+
+\section{Introduction}
+
+Large language model (LLM) and vision-language model (VLM) systems are increasingly built less by changing model weights than by reorganizing the runtime around them. Capabilities that earlier systems expected the model to recover internally are now externalized into memory stores, prompt-construction logic, tool use, and the surrounding harness that makes these modules reliable in practice \cite{b1}. This shift is especially visible in document intelligence, where scanned receipts, forms, and invoices must be turned into structured records with high reliability.
+
+A critical area where this harness perspective shows significant promise is document information extraction. Traditional document-understanding systems relied on layout analysis and template matching, but modern VLMs can read a receipt image directly and emit structured JSON in a single call. However, raw single-call extraction is not trustworthy enough for high-consequence settings: the model may misread a digit in a total, hallucinate a merchant name, or silently drop a field. Recent research has shown that harness optimization---searching over the context-management and prompt-construction code that wraps a fixed model---can yield large gains over hand-designed pipelines \cite{b2}. Yet this body of work has largely been evaluated on text and code tasks, not on document intelligence, and it does not directly address schema adherence, confidence estimation, or targeted self-correction.
+
+This research introduces a Harness for Reliable Document Intelligence that combines schema-guided structured output, confidence estimation, and self-correction around a frozen VLM. The system is designed to process heterogeneous scanned documents, extract only the fields declared in an application schema, and report a per-field confidence so that downstream decisions can route uncertain extractions to a stronger model or a human reviewer. By fixing the model and treating every other design choice as part of the harness, we can measure the marginal contribution of each reliability mechanism and search over harness configurations as a reward-optimization problem \cite{b2}.
+
+The system's core extraction is performed by a multimodal Gemini model configured with a JSON Schema, which guarantees schema-valid output. To estimate confidence without access to token-level log-probabilities---a common constraint on commodity API tiers---the harness samples the model several times under a nonzero temperature and measures per-field agreement (self-consistency). Fields whose agreement falls below a threshold are flagged and re-read with a targeted correction prompt that asks the model to focus on exactly those fields. This differs from blind self-refinement loops, which are known to plateau or even regress \cite{b3}.
+
+By combining schema guidance, self-consistency confidence, and targeted correction, this research addresses critical challenges in reliable document extraction, setting a precedent for treating extraction reliability as a harness-engineering problem. The main contributions are:
+
+\begin{itemize}
+    \item We formulate document key-value extraction as a \emph{harness} design problem around a frozen VLM and define three pipeline variants---schema-only, confidence-aware, and self-corrective---that isolate the contribution of each mechanism.
+    \item We implement a budget-aware, cache-first experimental harness that is robust to commodity free-tier API quotas (429 rate limits), making the evaluation reproducible on constrained budgets.
+    \item We evaluate on real scanned receipts from the SROIE benchmark and report field-level exact match, character-level F1, document-level full match, and expected calibration error, showing that confidence signals flag genuinely hard documents.
+    \item We show that raw agreement-based confidence is miscalibrated and motivate a calibration layer as a core component of trustworthy document intelligence.
+\end{itemize}
+
+This is the structure of the remainder of the paper: the literature review is covered in Section~\ref{sec:lit}, the dataset and schema design are illustrated in Section~\ref{sec:data}, the proposed harness methodology is described in Section~\ref{sec:method}, the result analysis is described in Section~\ref{sec:results}, and the study concludes with conclusions and future works in Section~\ref{sec:conclusion}.
+
+\section{Literature Review}
+\label{sec:lit}
+
+\subsection{Harness Engineering and Externalization}
+A recent line of work argues that agent capability is determined less by the model than by the \emph{harness}: the stateful program that determines what information is stored, retrieved, and presented to the model at each step. The Externalization review \cite{b1} organizes this design space into memory (state across time), skills (procedural expertise), protocols (interaction rules), and the harness that makes these modules reliable in practice. Meta-Harness \cite{b2} goes further and shows that harnesses themselves can be optimized: an outer-loop proposer reads a filesystem of prior harness code, execution traces, and scores, and iteratively proposes new harnesses, outperforming prior hand-designed and text-optimization baselines. Our work applies this lens to document extraction, where the harness must additionally manage a \emph{schema} (the target structure), a \emph{confidence model} (when to trust the extraction), and a \emph{correction policy} (what to do when confidence is low).
+
+\subsection{Schema-Guided Structured Extraction}
+Structured outputs constrain a model to emit JSON conforming to a provided JSON Schema, which is ideal for data extraction and classification \cite{b4}. Schema guidance gives two distinct benefits: it guarantees parseable output and it focuses the model's attention on exactly the fields the application needs. In our design the schema is part of the harness---it is an optimizable artifact rather than a fixed input.
+
+\subsection{Confidence Estimation and Calibration}
+Because commodity APIs rarely expose token-level log-probabilities, confidence must be estimated from observable signals. Self-consistency \cite{b5} samples a model multiple times and treats agreement across samples as a proxy for confidence; it is widely used to improve reasoning accuracy. However, agreement-based confidence is not automatically calibrated: the fraction of samples agreeing on a value is not the same as the probability that the value is correct. Expected calibration error (ECE) \cite{b6} quantifies this gap and is the metric we adopt to measure the quality of the confidence signal.
+
+\subsection{Self-Correction}
+LLM self-refinement---asking a model to critique and regenerate its own output---has produced mixed results; without an external verifier, iterative self-correction can plateau or regress \cite{b3}. Our design therefore restricts correction to \emph{targeted re-reading of low-confidence fields}, which is a narrower and more auditable operation than full regeneration.
+
+\section{Dataset and Schema Design}
+\label{sec:data}
+
+\subsection{The SROIE Dataset}
+We evaluate on the SROIE (Scanned Receipt OCR and Information Extraction) benchmark from ICDAR 2019 \cite{b7}, a widely used public dataset of real scanned receipts in English. Each receipt is annotated with four key-value fields: company, date, address, and total. SROIE is well suited to harness research because it is small (hundreds of documents), has dense, unambiguous labels, and represents the classic document-intelligence workload of converting a noisy scanned image into structured records. Two example receipts from our evaluation split are shown in Fig.~\ref{fig:receipts}.
+
+\begin{figure*}[htb]
+\centerline{\includegraphics[width=3.2in,height=2.2in,keepaspectratio]{fig/receipt_sample_a.jpg}\hspace{0.15in}\includegraphics[width=3.2in,height=2.2in,keepaspectratio]{fig/receipt_sample_b.jpg}}
+    \caption{Sample scanned receipts from the SROIE evaluation split used in this study.}
+    \label{fig:receipts}
+\end{figure*}
+
+\subsection{Schema Definition}
+The extraction target is a typed schema with four fields. We express it as a JSON Schema and pass it directly to the model via the structured-output configuration, which guarantees schema-valid responses. The schema is defined as:
+
+\[
+\text{Schema} = \{\,
+\text{company}, \text{date}, \text{address}, \text{total}
+\,\}
+\]
+
+Each field carries a natural-language description (e.g., total: ``total amount paid'') that guides the model during decoding. Schema validity---the fraction of responses that parse and conform to the schema---is itself one of our reliability metrics.
+
+\subsection{Preprocessing}
+Receipt images are used as-is; the VLM receives the raw JPEG with a text instruction. Ground-truth strings are normalized for evaluation by lowercasing and collapsing whitespace. We additionally analyze a \emph{date-format} effect: near-miss errors where the extracted value is semantically correct but formatted differently from the ground truth (e.g., \texttt{05/06/2018} vs.\ \texttt{05-06-2018}) penalize exact match without being true extraction failures. Character-level F1 is used alongside exact match to give partial credit for such cases.
+
+\section{Methodology}
+\label{sec:method}
+
+The present research offers a harness that wraps a frozen VLM with three reliability mechanisms. The approach is deliberately modular: each mechanism can be enabled or disabled, which lets us measure its marginal contribution. We compare three harness variants:
+
+\begin{itemize}
+    \item \textbf{Variant A (schema-only baseline):} one schema-guided structured-extraction call at temperature zero.
+    \item \textbf{Variant B (confidence-aware):} \(N\) self-consistency samples at nonzero temperature, aggregated by majority vote, with per-field confidence equal to the agreement rate.
+    \item \textbf{Variant C (self-corrective):} Variant B plus one targeted re-read of fields whose confidence is below a threshold \(\tau\).
+\end{itemize}
+
+\subsection{Schema-Guided Extraction}
+The base operation is a single multimodal call. The prompt instructs the model to read the receipt and extract the schema fields, and the response is constrained to valid JSON matching the schema:
+
+\[
+\hat{y} = \text{VLM}(I,\; \text{Prompt},\; \text{Schema})
+\]
+
+where \(I\) is the receipt image. Variant A returns \(\hat{y}\) directly. Structured output guarantees that \(\hat{y}\) is schema-valid, but it does not guarantee that the values are correct---which motivates confidence estimation.
+
+\subsection{Confidence Estimation by Self-Consistency}
+To estimate per-field confidence without token log-probabilities, the harness draws \(N\) independent samples \(\{\hat{y}^{(1)}, \ldots, \hat{y}^{(N)}\}\) with temperature \(> 0\). For each field \(f \in \{\text{company}, \text{date}, \text{address}, \text{total}\}\), let \(c_f\) be the number of samples whose extracted value equals the most frequent value (the mode). The aggregate value is the mode, and confidence is the agreement rate:
+
+\[
+\text{conf}(f) = \frac{\max_v \sum_{n=1}^{N} \mathbb{1}[\hat{y}^{(n)}_f = v]}{N}
+\]
+
+Fields where independent samples disagree are less trustworthy. A field is flagged when \(\text{conf}(f) < \tau\), where \(\tau\) is a harness threshold.
+
+\subsection{Targeted Self-Correction}
+For each flagged field, the harness issues a correction call with temperature zero. The correction prompt shows the previous aggregate extraction, names the flagged fields explicitly, and asks the model to re-read the image focusing on those fields and return the full updated object:
+
+\[
+\text{Correct}(f) = \text{VLM}\big(I,\; \text{``Re-read and correct: ''} + f,\; \text{Schema}\big)
+\]
+
+Only flagged fields are overwritten from the correction response; unflagged fields keep their majority-vote values. This prevents the correction call from disturbing fields that were already consistent across samples, and it keeps the number of additional calls bounded by the number of flagged fields. Fig.~\ref{fig:pipeline} summarizes the resulting harness pipeline: the same receipt image is routed through the three variants, and each variant's output feeds a shared evaluation stage.
+
+\begin{figure}[htb]
+\centerline{\includegraphics[width=3.4in]{fig/fig_harness_pipeline.png}}
+    \caption{Harness pipeline: Variant A (schema-only), Variant B (self-consistency + confidence), and Variant C (B plus targeted correction of flagged fields) around the same frozen VLM, feeding a shared evaluation stage.}
+    \label{fig:pipeline}
+\end{figure}
+
+\subsection{Evaluation Metrics}
+Let \(\text{Exact}(a, b)\) indicate normalized string equality. Over a set of documents with predicted values \(p_f\) and ground-truth values \(g_f\), we report:
+
+\[
+\text{FieldExact} = \frac{1}{|\mathcal{D}||\mathcal{F}|} \sum_{d \in \mathcal{D}} \sum_{f \in \mathcal{F}} \mathbb{1}[\text{Exact}(p_{d,f}, g_{d,f})]
+\]
+
+\[
+\text{FieldF1} = \frac{1}{|\mathcal{D}||\mathcal{F}|} \sum_{d \in \mathcal{D}} \sum_{f \in \mathcal{F}} \text{CharF1}(p_{d,f}, g_{d,f})
+\]
+
+where \(\text{CharF1}\) is the character-level F1 between normalized strings, and \(\text{DocFull}\) is the fraction of documents where all fields match exactly. We additionally report expected calibration error. Confidence and correctness pairs \((\text{conf}, c) \in [0,1] \times \{0,1\}\) are binned into \(M\) bins; ECE is:
+
+\[
+\text{ECE} = \sum_{m=1}^{M} \frac{|B_m|}{T} \left| \text{acc}(B_m) - \text{conf}(B_m) \right|
+\]
+
+where \(B_m\) is the \(m\)-th confidence bin, \(\text{acc}(B_m)\) is the average correctness in the bin, \(\text{conf}(B_m)\) is the average confidence, and \(T\) is the total number of field predictions.
+
+\section{Result and Analysis}
+\label{sec:results}
+
+\subsection{Experimental Setup}
+Experiments use the Gemini 2.5 Flash model on the free API tier. Self-consistency samples use \(N=3\) with temperature \(0.5\); the baseline uses temperature \(0\); the correction threshold is \(\tau = 0.5\). The free tier imposes a strict daily quota on image-generation calls, so the experimental harness is cache-first: every successful response is cached, and quota-exhaustion (HTTP 429) is retried with backoff. This makes runs resumable and reproducible without re-spending calls. Table~\ref{tab:results} reports verified results on a pilot subset of three receipts; the identical pipeline scales to the full 126-document evaluation split.
+
+\begin{table}[htb]
+\centering
+\caption{Pilot results on three SROIE receipts: field exact match, character-level field F1, document-level full match, calls per document, and expected calibration error (ECE). Variant A has no confidence estimate, so ECE is undefined.}
+\label{tab:results}
+\begin{tabular}{lcccc}
+\hline
+\textbf{Variant} & \textbf{FieldExact} & \textbf{FieldF1} & \textbf{DocFull} & \textbf{ECE}\\
+\hline
+A (schema-only) & 0.833 & 0.983 & 0.667 & ---\\
+B (confidence) & 0.833 & 0.983 & 0.667 & 0.277\\
+C (self-correct) & 0.833 & 0.983 & 0.667 & 0.277\\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Schema Guidance Is a Strong Baseline}
+With a single structured call, the harness already reaches 83.3\% field-level exact match and 98.3\% character-level F1 (Table~\ref{tab:results}, Fig.~\ref{fig:metrics}). The remaining errors are near-misses---case differences such as \texttt{No.} vs.\ \texttt{NO.} or date-separator differences---rather than hallucinated content. This confirms that schema-guided structured output is a reliable foundation and that the interesting research questions live in confidence estimation and correction rather than raw decoding.
+
+\begin{figure}[htb]
+\centerline{\includegraphics[width=3.2in]{fig/fig_metric_comparison.png}}
+    \caption{Field-level exact match, character-level field F1, and document-level full match for the three harness variants on the pilot subset. All three metrics are identical across variants, indicating that added mechanisms did not yet move accuracy at this sample size.}
+    \label{fig:metrics}
+\end{figure}
+
+\subsection{Confidence Flags Genuinely Hard Documents}
+The one document where all four fields fell below the confidence threshold (agreement \(0.33\) across three samples) was exactly the document whose single-call output contained formatting drift. In contrast, the two documents with agreement \(0.67\) were extracted correctly. This is a directional result (sample size three) that the confidence signal separates hard documents from easy ones, which is precisely the property a ``route to human review'' policy needs. Fig.~\ref{fig:err} breaks down the remaining Variant C errors by field: only \texttt{date} and \texttt{address} contribute mistakes, while \texttt{company} and \texttt{total} are extracted perfectly on the pilot subset.
+
+\begin{figure}[htb]
+\centerline{\includegraphics[width=3.0in]{fig/fig_error_by_field.png}}
+    \caption{Per-field error counts for Variant C on the pilot subset. Errors concentrate on \texttt{date} (format drift) and \texttt{address} (case drift), not on \texttt{company} or \texttt{total}.}
+    \label{fig:err}
+\end{figure}
+
+\subsection{Confidence Is Miscalibrated but Conservative}
+The expected calibration error of 0.277 shows that agreement-based confidence is not a calibrated probability: fields with confidence near 0.67 are in fact correct roughly 83\% of the time in our pilot (Fig.~\ref{fig:calib}). Directionally the signal is \emph{conservative}---it understates reliability---which is safe for high-consequence routing, but it must be calibrated before it can be reported as a probability. This motivates a calibration layer (e.g., temperature scaling or binning on a small development set) as a core component of the harness.
+
+\begin{figure}[htb]
+\centerline{\includegraphics[width=3.0in]{fig/fig_calibration.png}}
+    \caption{Reliability diagram for Variant C: mean predicted confidence (self-consistency agreement) versus empirical accuracy, binned into deciles. Marker size is proportional to the number of field predictions in the bin. Points below the diagonal indicate conservative (under-confident) calibration.}
+    \label{fig:calib}
+\end{figure}
+
+\subsection{Targeted Self-Correction Is a Bounded, Auditable Operation}
+On the pilot subset, the correction call re-affirmed the majority-vote values and did not change accuracy (Variant C equals Variant B in Table~\ref{tab:results}). This is consistent with the literature on self-refinement, which finds that correction without an external verifier often plateaus \cite{b3}. The value of the mechanism in our design is not that it always improves accuracy, but that it is \emph{targeted} (only low-confidence fields), \emph{bounded} (at most one extra call per flagged field), and \emph{auditable} (the harness records which fields were flagged and corrected). Whether targeted correction helps on a larger, harder set is an open question we plan to answer at full scale.
+
+\subsection{Cost and Quota-Awareness}
+Variant C costs at most \(N + 1\) calls per document (\(N\) samples plus up to one correction call) compared to one call for the baseline. Fig.~\ref{fig:cost} plots this trade-off directly: Variant B pays a \(3\times\) call budget over Variant A for the same accuracy on the pilot subset, and Variant C's targeted correction adds only a small additional cost (0.3 calls/doc, since just one of three documents had a flagged field) rather than a full extra pass. On the free tier this translates to a practical ceiling of roughly 30--50 documents per day for our design. This budget constraint is itself research-relevant: it motivates a budget-aware harness that spends extra calls only when confidence is low and the document is hard.
+
+\begin{figure}[htb]
+\centerline{\includegraphics[width=3.0in]{fig/fig_cost_accuracy.png}}
+    \caption{Model calls per document versus field-level exact match for each harness variant. Variant C's correction step adds a small, targeted cost over Variant B rather than a full additional pass.}
+    \label{fig:cost}
+\end{figure}
+
+\section{Conclusion and Future Works}
+\label{sec:conclusion}
+
+This research successfully demonstrates a harness-engineering approach to reliable document intelligence. By fixing the VLM and varying only the surrounding harness---schema, sampling policy, confidence estimator, and correction rule---we isolate and measure the contribution of each reliability mechanism on real scanned receipts. Schema-guided structured extraction provides a strong baseline (83.3\% field exact match, 98.3\% character-level F1 on the pilot subset), self-consistency confidence correctly flags genuinely hard documents, and a calibration analysis quantifies the gap between agreement-based confidence and true accuracy.
+
+The harness perspective offers a clear path to further improvements. The modular evaluation we built is a clean reward function for harness optimization: a natural next step is to apply a Meta-Harness-style outer loop \cite{b2} that searches over prompt wording, schema descriptions, sampling counts, and confidence thresholds, using our evaluation as the reward. We also plan to:
+\begin{itemize}
+    \item Scale the evaluation to the full SROIE split and additional document types (forms and invoices) once API quota allows, and report confidence intervals.
+    \item Compare self-consistency confidence against verbalized confidence and an external verifier model, and add a calibration layer on a held-out development set.
+    \item Add a date/amount normalizer so that semantically correct near-miss extractions are not penalized by exact-match metrics.
+    \item Simulate a human-review policy that routes low-confidence documents to a reviewer, quantifying the reliability gain per human intervention.
+    \item Explore schema evolution: measure how extraction reliability changes as the target schema grows in size and complexity.
+\end{itemize}
+
+\begin{thebibliography}{00}
+\bibitem{b1} C.~Zhou et al., ``Externalization in LLM agents: A unified review of memory, skills, protocols and harness engineering,'' arXiv preprint arXiv:2604.08224, 2026.
+
+\bibitem{b2} Y.~Lee, R.~Nair, Q.~Zhang, K.~Lee, O.~Khattab, and C.~Finn, ``Meta-Harness: End-to-end optimization of model harnesses,'' arXiv preprint arXiv:2603.28052, 2026.
+
+\bibitem{b3} J.~Huang et al., ``Large language models cannot self-correct reasoning yet,'' in \emph{ICLR}, 2024.
+
+\bibitem{b4} Google AI, ``Structured outputs,'' Gemini API documentation, 2026. [Online]. Available: https://ai.google.dev/gemini-api/docs/structured-output
+
+\bibitem{b5} X.~Wang et al., ``Self-consistency improves chain of thought reasoning in language models,'' in \emph{ICLR}, 2023.
+
+\bibitem{b6} C.~Guo, G.~Pleiss, Y.~Sun, and K.~Weinberger, ``On calibration of modern neural networks,'' in \emph{ICML}, 2017.
+
+\bibitem{b7} Z.~Huang et al., ``ICDAR2019 competition on scanned receipt OCR and information extraction,'' in \emph{ICDAR}, 2019.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,40 @@
+Docs=24 conf_threshold=0.5 workers=4
+Direct use of automatic function calling (AFC) in Models.generate_content is not recommended. Instead, we recommend to use AFC in Chat.send_message. Similarly, direct use of AFC in Models.generate_content_stream is not recommended. Instead, we recommend to use AFC in Chat.send_message_stream.
+Direct use of automatic function calling (AFC) in Models.generate_content is not recommended. Instead, we recommend to use AFC in Chat.send_message. Similarly, direct use of AFC in Models.generate_content_stream is not recommended. Instead, we recommend to use AFC in Chat.send_message_stream.
+Direct use of automatic function calling (AFC) in Models.generate_content is not recommended. Instead, we recommend to use AFC in Chat.send_message. Similarly, direct use of AFC in Models.generate_content_stream is not recommended. Instead, we recommend to use AFC in Chat.send_message_stream.
+Direct use of automatic function calling (AFC) in Models.generate_content is not recommended. Instead, we recommend to use AFC in Chat.send_message. Similarly, direct use of AFC in Models.generate_content_stream is not recommended. Instead, we recommend to use AFC in Chat.send_message_stream.
+  [1/24] doc 2 (X51006555125.jpg) calls=5 flagged=['company', 'date', 'address', 'total'] elapsed=5s
+  [2/24] doc 1 (X51008142030.jpg) calls=5 flagged=['company', 'date', 'address', 'total'] elapsed=5s
+  [3/24] doc 0 (X51005663272.jpg) calls=5 flagged=['company', 'date', 'address', 'total'] elapsed=6s
+  [4/24] doc 3 (X51007339097.jpg) calls=5 flagged=['company', 'date', 'address', 'total'] elapsed=6s
+  [5/24] doc 4 (X51006555780.jpg) calls=5 flagged=['company', 'date', 'address', 'total'] elapsed=10s
+  [6/24] doc 7 (X51005711445.jpg) calls=5 flagged=['company', 'date', 'address', 'total'] elapsed=11s
+  [7/24] doc 6 (X51006008197.jpg) calls=5 flagged=['company', 'date', 'address', 'total'] elapsed=11s
+  [8/24] doc 5 (X51005757294.jpg) calls=5 flagged=['company', 'date', 'address', 'total'] elapsed=12s
+  [9/24] doc 8 (X51007391372.jpg) calls=5 flagged=['company', 'date', 'address', 'total'] elapsed=16s
+  [10/24] doc 9 (X51005757324.jpg) calls=5 flagged=['company', 'date', 'address', 'total'] elapsed=17s
+  [11/24] doc 10 (X51005301661.jpg) calls=5 flagged=['company', 'date', 'address', 'total'] elapsed=19s
+  [12/24] doc 11 (X51006912960.jpg) calls=5 flagged=['company', 'date', 'address', 'total'] elapsed=20s
+  [13/24] doc 13 (X51009453801.jpg) calls=5 flagged=['company', 'date', 'address', 'total'] elapsed=22s
+  [14/24] doc 12 (X51005361900.jpg) calls=5 flagged=['company', 'date', 'address', 'total'] elapsed=23s
+  [15/24] doc 14 (X51005719899.jpg) calls=5 flagged=['company', 'date', 'address', 'total'] elapsed=24s
+  [16/24] doc 15 (X51005711452.jpg) calls=5 flagged=['company', 'date', 'address', 'total'] elapsed=25s
+  [17/24] doc 16 (X51008114262.jpg) calls=5 flagged=['company', 'date', 'address', 'total'] elapsed=27s
+  [18/24] doc 18 (X51007339658.jpg) calls=5 flagged=['company', 'date', 'address', 'total'] elapsed=30s
+  [19/24] doc 19 (X51006387932.jpg) calls=5 flagged=['company', 'date', 'address', 'total'] elapsed=30s
+  [20/24] doc 20 (X51005806716.jpg) calls=5 flagged=['company', 'date', 'address', 'total'] elapsed=33s
+  [21/24] doc 17 (X51006414714.jpg) calls=5 flagged=['company', 'date', 'address', 'total'] elapsed=34s
+  [22/24] doc 21 (X51005568898.jpg) calls=5 flagged=['company', 'date', 'address', 'total'] elapsed=35s
+  [23/24] doc 22 (X51006913031.jpg) calls=5 flagged=['company', 'date', 'address', 'total'] elapsed=40s
+  [24/24] doc 23 (X51006414680.jpg) calls=5 flagged=['company', 'date', 'address', 'total'] elapsed=45s
+
+Variant A:
+  docs=24  calls=120  field_exact=0.000  doc_full=0.000  field_f1=0.000
+
+Variant B:
+  docs=24  calls=120  field_exact=0.000  doc_full=0.000  field_f1=0.000  ECE=0.000  low_conf_frac=1.000
+
+Variant C:
+  docs=24  calls=120  field_exact=0.000  doc_full=0.000  field_f1=0.000  ECE=0.000  low_conf_frac=1.000
+
+Saved -> /Users/mdalamintokder/Documents/Learning_and_Others/Research/harness/research/outputs/results.json

@@ -1,0 +1,242 @@
+[
+  {
+    "file_name": "X51005663272.jpg",
+    "image_path": "data/raw/sroie_val/images/X51005663272.jpg",
+    "ground_truth": {
+      "company": "WAHIN HARDWARE SDN BHD",
+      "date": "04/12/17",
+      "address": "425, JALAN PAHANG, SETAPAK, 53000 KUALA LUMPUR.",
+      "total": "42.40"
+    }
+  },
+  {
+    "file_name": "X51008142030.jpg",
+    "image_path": "data/raw/sroie_val/images/X51008142030.jpg",
+    "ground_truth": {
+      "company": "ONE ONE THREE SEAFOOD RESTAURANT SDN BHD",
+      "date": "05-06-2018",
+      "address": "NO. 1, TAMAN SRI DENGKIL, JALAN AIR HITAM 43800 DENGKIL, SELANGOR.",
+      "total": "52.00"
+    }
+  },
+  {
+    "file_name": "X51006555125.jpg",
+    "image_path": "data/raw/sroie_val/images/X51006555125.jpg",
+    "ground_truth": {
+      "company": "KHIAM AIK CHAN SDN BHD",
+      "date": "25/09/2017",
+      "address": "NO. 76, JALAN SS15/4B, 47500 SUBANG JAYA, SELANGOR D.E.",
+      "total": "28.40"
+    }
+  },
+  {
+    "file_name": "X51007339097.jpg",
+    "image_path": "data/raw/sroie_val/images/X51007339097.jpg",
+    "ground_truth": {
+      "company": "SANYU STATIONERY SHOP",
+      "date": "10/04/2017",
+      "address": "NO. 31G&33G, JALAN SETIA INDAH X ,U13/X 40170 SETIA ALAM",
+      "total": "8.70"
+    }
+  },
+  {
+    "file_name": "X51006555780.jpg",
+    "image_path": "data/raw/sroie_val/images/X51006555780.jpg",
+    "ground_truth": {
+      "company": "GARDENIA BAKERIES (KI ) SDN BHD",
+      "date": "21/07/2017",
+      "address": "LOT 3, JALAN PELABUR 23/1, 40300 SHAH ALAM, SELANGOR.",
+      "total": "33.05"
+    }
+  },
+  {
+    "file_name": "X51005757294.jpg",
+    "image_path": "data/raw/sroie_val/images/X51005757294.jpg",
+    "ground_truth": {
+      "company": "MR. D.I.Y. (M) SDN BHD",
+      "date": "18-03-18",
+      "address": "LOT 1851-A & 1851-B, JALAN KPB 6, KAWASAN PERINDUSTRIAN BALAKONG, 43300 SERI KEMBANGAN, SELANGOR",
+      "total": "10.60"
+    }
+  },
+  {
+    "file_name": "X51006008197.jpg",
+    "image_path": "data/raw/sroie_val/images/X51006008197.jpg",
+    "ground_truth": {
+      "company": "RELAIS TOTAL OULMES",
+      "date": "30/03/2018",
+      "address": "AUTOROUTE RABAT MEKNES 15000 KHEMISSET",
+      "total": "56.00"
+    }
+  },
+  {
+    "file_name": "X51005711445.jpg",
+    "image_path": "data/raw/sroie_val/images/X51005711445.jpg",
+    "ground_truth": {
+      "company": "RESTORAN WAN SHENG",
+      "date": "12-03-2018",
+      "address": "NO.2, JALAN TEMENGGUNG 19/9, SEKSYEN 9, BANDAR MAHKOTA CHERAS, 43200 CHERAS, SELANGOR",
+      "total": "7.00"
+    }
+  },
+  {
+    "file_name": "X51007391372.jpg",
+    "image_path": "data/raw/sroie_val/images/X51007391372.jpg",
+    "ground_truth": {
+      "company": "FY EAGLE ENTERPRISE",
+      "date": "24/05/2018",
+      "address": "NO. 42, JALAN PBS 14/11, TAMAN PERINDUSTRIAN BUKIT SERDANG, 43300 SERI KEMBANGAN, SELANGOR",
+      "total": "52.00"
+    }
+  },
+  {
+    "file_name": "X51005757324.jpg",
+    "image_path": "data/raw/sroie_val/images/X51005757324.jpg",
+    "ground_truth": {
+      "company": "MR. D.I.Y. (M) SDN BHD",
+      "date": "25-03-18",
+      "address": "LOT 1851-A & 1851-B, JALAN KPB 6, KAWASAN PERINDUSTRIAN BALAKONG, 43300 SERI KEMBANGAN, SELANGOR",
+      "total": "50.80"
+    }
+  },
+  {
+    "file_name": "X51005301661.jpg",
+    "image_path": "data/raw/sroie_val/images/X51005301661.jpg",
+    "ground_truth": {
+      "company": "LIGHTROOM GALLERY SDN BHD",
+      "date": "20/12/2017",
+      "address": "NO: 28, JALAN ASTANA 1C, BANDAR BUKIT RAJA, 41050 KLANG SELANGOR D.E, MALAYSIA",
+      "total": "73.00"
+    }
+  },
+  {
+    "file_name": "X51006912960.jpg",
+    "image_path": "data/raw/sroie_val/images/X51006912960.jpg",
+    "ground_truth": {
+      "company": "DE MAXIMUM THAI EXPRESS SDN BHD",
+      "date": "17/05/2018",
+      "address": "BLK 2, UNIT G1 & G2, BESTARI TERRACE, LOT PTD 182908 & PTD 143216, JALAN DANGA, TAMAN NUSA BESTARI, 81300",
+      "total": "30.70"
+    }
+  },
+  {
+    "file_name": "X51005361900.jpg",
+    "image_path": "data/raw/sroie_val/images/X51005361900.jpg",
+    "ground_truth": {
+      "company": "TEO HENG STATIONERY & BOOKS",
+      "date": "23/01/2018",
+      "address": "NO.53,JALAN BESAR,45600 BATANG BERJUNTAI SELANGOR DARUL EHSAN",
+      "total": "18.00"
+    }
+  },
+  {
+    "file_name": "X51009453801.jpg",
+    "image_path": "data/raw/sroie_val/images/X51009453801.jpg",
+    "ground_truth": {
+      "company": "GL HANDICRAFT & TAIL ORING",
+      "date": "20/03/2018",
+      "address": "19, JALAN KANCIL, OFF JALAN PUDU, 55100 KUALA LUMPUR MALAYSIA",
+      "total": "102.00"
+    }
+  },
+  {
+    "file_name": "X51005719899.jpg",
+    "image_path": "data/raw/sroie_val/images/X51005719899.jpg",
+    "ground_truth": {
+      "company": "LITTLE CRAVINGS SDN BHD",
+      "date": "18-03-2018",
+      "address": "HQ: 7, JLN SS21/34, 47400 PJ",
+      "total": "RM53.60"
+    }
+  },
+  {
+    "file_name": "X51005711452.jpg",
+    "image_path": "data/raw/sroie_val/images/X51005711452.jpg",
+    "ground_truth": {
+      "company": "GERBANG ALAF RESTAURANTS SDN BHD",
+      "date": "21/03/2018",
+      "address": "LEVEL 6, BANGUNAN TH, DAMANSARA UPTOWN3 NO.3, JALAN SS21/39, 47400 PETALING JAYA SELANGOR",
+      "total": "25.40"
+    }
+  },
+  {
+    "file_name": "X51008114262.jpg",
+    "image_path": "data/raw/sroie_val/images/X51008114262.jpg",
+    "ground_truth": {
+      "company": "99 SPEED MART S/B",
+      "date": "05-05-18",
+      "address": "LOT P.T. 2811, JALAN ANGSA, TAMAN BERKELEY 41150 KLANG, SELANGOR 1237-TMN INDAH PERDANA",
+      "total": "137.15"
+    }
+  },
+  {
+    "file_name": "X51006414714.jpg",
+    "image_path": "data/raw/sroie_val/images/X51006414714.jpg",
+    "ground_truth": {
+      "company": "THE TOAST F&B SDN BHD",
+      "date": "08/04/2018",
+      "address": "LOT 2110&2111 JALAN PERMAS UTARA BANDAR BARU PERMAS 81750 JOHOR BAHRU JOHOR",
+      "total": "18.90"
+    }
+  },
+  {
+    "file_name": "X51007339658.jpg",
+    "image_path": "data/raw/sroie_val/images/X51007339658.jpg",
+    "ground_truth": {
+      "company": "AIK HUAT HARDWARE ENTERPRISE (SETIA ALAM) SDN BHD",
+      "date": "04/09/2017",
+      "address": "NO. 17-G, JALAN SETIA INDAH (X) U13/X, SETIA ALAM, SEKSYEN U13, 40170 SHAH ALAM,",
+      "total": "28.00"
+    }
+  },
+  {
+    "file_name": "X51006387932.jpg",
+    "image_path": "data/raw/sroie_val/images/X51006387932.jpg",
+    "ground_truth": {
+      "company": "BILLION SIX ENTERPRISE",
+      "date": "04/05/2017",
+      "address": "NO 3, JALAN TAMAN JASA 2, SECTION U6, 40150 SHAH ALAM.",
+      "total": "12.00"
+    }
+  },
+  {
+    "file_name": "X51005806716.jpg",
+    "image_path": "data/raw/sroie_val/images/X51005806716.jpg",
+    "ground_truth": {
+      "company": "ADVANCO COMPANY",
+      "date": "17/01/2018",
+      "address": "NO 1&3, JALAN WANGSA DELIMA 12, WANGSA LINK, WANGSA MAJU, 53300 KUALA LUMPUR",
+      "total": "7.00"
+    }
+  },
+  {
+    "file_name": "X51005568898.jpg",
+    "image_path": "data/raw/sroie_val/images/X51005568898.jpg",
+    "ground_truth": {
+      "company": "VIVOPAC MARKETING SDN BHD",
+      "date": "30/05/2017",
+      "address": "14 JALAN MANIS 4 TAMAN SEGAR 56100 KL",
+      "total": "18.80"
+    }
+  },
+  {
+    "file_name": "X51006913031.jpg",
+    "image_path": "data/raw/sroie_val/images/X51006913031.jpg",
+    "ground_truth": {
+      "company": "UNIHAKKA INTERNATIONAL SDN BHD",
+      "date": "09 MAY 2018",
+      "address": "12, JALAN TAMPOI 7/4,KAWASAN PERINDUSTRIAN TAMPOI,81200 JOHOR BAHRU,JOHOR",
+      "total": "$6.60"
+    }
+  },
+  {
+    "file_name": "X51006414680.jpg",
+    "image_path": "data/raw/sroie_val/images/X51006414680.jpg",
+    "ground_truth": {
+      "company": "AEON CO. (M) BHD",
+      "date": "18/04/2018",
+      "address": "3RD FLR, AEON TAMAN MALURI SC JLN JEJAKA, TAMAN MALURI CHERAS, 55100 KUALA LUMPUR",
+      "total": "1.75"
+    }
+  }
+]

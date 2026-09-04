@@ -1,0 +1,336 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\begin{document}
+
+\title{A Multi-Agent Garage Service Search and Recommendation with Hybrid MLs and LLMs\\
+
+
+}
+
+\author{
+    \IEEEauthorblockN{
+        Mahfuzur Rahman Shuvo\textsuperscript{1},
+        Ashifur Rahman\textsuperscript{2},
+        Vishwanath Akuthota\textsuperscript{3},
+        Tanay Paul\textsuperscript{4},\\
+        Mahfujul Islam\textsuperscript{5},
+        Md Sadi Ashraf\textsuperscript{6},
+        Prosenjit Roy\textsuperscript{7},
+        Md Tanzim Reza\textsuperscript{8}\\
+    }
+    \IEEEauthorblockA{
+        \textsuperscript{1}Department of Management Information System, International American University, United States\\
+        \textsuperscript{2}Department of Computer Science and Engineering, Chittagong University of Engineering and Technology , Bangladesh\\
+        \textsuperscript{3}TechOptima, Hyderabad, India\\
+        \textsuperscript{4,5,6,8}Department of Computer Science and Engineering, BRAC University, Bangladesh\\
+        \textsuperscript{7}Department of Computer Science, Prairie View A \& M University, Texas, United States\\
+        Email: \textsuperscript{1}mahfuzshuvo1@gmail.com,
+        \textsuperscript{2}ashifurnahid32@gmail.com,
+        \textsuperscript{3}vishwanath.chintu@gmail.com,\\
+        \textsuperscript{4}tanay.paul.official@gmail.com,
+        \textsuperscript{5}mahfujul.in@gmail.com,
+        \textsuperscript{6}sadisaysgo@gmail.com,\\
+        \textsuperscript{7}prosenjit.roy.ontor@gmail.com,
+        \textsuperscript{8}tanzim.reza@bracu.ac.bd
+    }
+}
+
+\maketitle
+
+\begin{abstract}
+The automobile service industry's explosive growth highlights the need for creative approaches to boost operational effectiveness and user experience. This study introduces a Hybrid Garage Assistance System, integrating Classical Machine Learning (ML) techniques with Generative AI to optimize garage service discovery and analysis. The system employs sophisticated data processing methods, including Term Frequency-Inverse Document Frequency (TF-IDF) vectorization and regex-based service detection, to extract actionable insights from unstructured garage data.Central to the system are machine learning models Random Forest (RF) and XGBoost (XGB) which achieve high precision and recall in classifying garage services. A hybrid search mechanism, combining cosine similarity with ML-driven predictions, ensures the delivery of highly personalized search results. To further refine decision-making, the system incorporates Generative AI models such as Perplexity for web-based research, Gemini for location-specific analysis, Mistral for email sending and GPT-4 for detailed service recommendations and dall-e for creating user specific parts images. These advanced tools provide users with comprehensive information that enables them to make well-informed decisions about garage services.Performance evaluation of the system is conducted using robust metrics, including precision, recall, F1-score, and system latency. Experimental results reveal a precision of 85\%, recall of 70.8\%, and an F1-score of 77.2\%, demonstrating the efficacy of integrating classical ML with generative AI. The system's average latency of 5.9 seconds ensures a seamless and responsive user experience.This hybrid framework highlights the potential of blending classical ML and Large Language Models (LLMs) to enhance search and recommendation functionalities, offering a scalable and robust blueprint for future advancements in the automotive service sector. The system’s Propose a Multi-Agent System With high accuracy, scalability, and reliability position it as a cutting-edge solution for users navigating the complexities of garage service selection.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Garage, LLMs, MLs, MultiAgent
+\end{IEEEkeywords}
+
+\section{Introduction}
+
+
+A critical area where GenAI shows significant promise is in improving comprehension of complex data visualizations. Traditional methods like data storytelling, while effective, are now being outperformed by GenAI agents, particularly proactive ones that guide users through scaffolding questions, resulting in sustained learning and better decision-making in Yan et al. Research\cite{b1}. Beyond data comprehension, researchers also find that GenAI is also poised to transform the healthcare industry by simplifying interactions with complex systems such as Medicare and insurance, enhancing accessibility and user experience \cite{b4}.
+
+
+This research introduces a Hybrid Garage Assistance System that combines the strengths of Classical ML and Generative AI to deliver a robust, user-centric platform for garage service discovery and analysis. The system is designed to process large-scale, heterogeneous data, extract meaningful insights, and provide users with actionable recommendations. By leveraging TF-IDF-based text processing, regex-driven service identification, and categorical encoding, the system transforms raw garage data into structured, feature-rich representations suitable for machine learning models.
+
+The system uses two cutting-edge machine learning algorithms, Random Forest (RF)\footnote{https://www.ibm.com/think/topics/random-forest} and XGBoost\footnote{https://www.nvidia.com/en-us/glossary/xgboost/} (XGB), to categorize garage services. To further enhance the search experience, a hybrid search mechanism is implemented, combining cosine similarity-based text matching with ML-driven service relevance scoring. This dual approach ensures both semantic accuracy and service-specific relevance in search results.
+
+By combining classical and generative AI methodologies, this research addresses critical challenges in service discovery and recommendation systems, setting a precedent for future advancements in the field. The Hybrid Garage Assistance System serves as a scalable and adaptable solution, bridging the gap between user needs and service capabilities in the automotive sector.
+\begin{figure*}[htb]
+\centerline{\includegraphics[width=4.5in,height=4.5in,keepaspectratio]{- visual selection(1).png}}
+    \caption{United Kingdom Garage Dataset}
+    \label{fig: United Kingdom Garage Dataset}
+\end{figure*}
+This work presents a new approach to data handling and user querying from ML-LLM models. The main contributions are:
+
+\begin{itemize}
+    \item  Using sophisticated data processing methods, such as TF-IDF-based text processing, regex-driven service identification, and hybrid search mechanisms that combine cosine similarity and machine learning-based relevance scoring, can increase the precision and applicability of garage service discovery.
+    \item  To design and implement a Hybrid Multi-Agent Garage Assistance System that integrates classical machine learning algorithms (Random Forest and XGBoost) and generative AI models (Perplexity AI, Gemini AI, Mistral and GPT-4omini) for efficient discovery, classification, and recommendation of automotive garage services.
+    \item We created a United Kingdom graph using data from a Google map, including the garage's name, location, city, postcode, phone number, email address, and website link.
+    
+\end{itemize}
+
+
+This is the structure of the remainder of the paper: The literature review is covered in Chapter 2, the dataset details and processing are illustrated in Chapter 3, the suggested technique is described in Chapter 4, the result analysis is described in Chapter 5, and the study is concluded with a conclusion and references in Chapter 6.
+
+
+
+\section{literature Review}
+Generative Artificial Intelligence (GenAI) has emerged as a transformative technology, capable of revolutionizing numerous fields by mimicking human creativity to generate content, interpret data, and adapt to complex environments. With applications spanning healthcare, education, innovation, and autonomous systems, 
+\subsection{Generative AI Agent Related Researches}
+
+Yan et al. investigates the role of generative AI (GenAI) agents in enhancing data visualization comprehension, highlighting a randomized controlled trial comparing proactive GenAI agents, passive agents, and data storytelling. Results indicate that proactive agents significantly improve comprehension and foster sustained learning.\cite{b1}.Generative AI integration into autonomous machines poses unique safety challenges, necessitating robust safeguards and safety scorecards to ensure secure deployment in high-stakes environments in this Research \cite{b2}.\cite{b3} Research demonstrates that generative AI can revolutionize early innovation stages by augmenting exploration, ideation, and prototyping processes. This approach accelerates iteration cycles, reduces costs, and enhances human-AI collaboration .\cite{b4} Authors Shows Generative AI is transforming healthcare virtual agents, simplifying complex health insurance processes and improving user interactions. This research employs agent-based modeling (ABM) to predict generative AI's societal impact, focusing on dynamics like education, skills acquisition, and regulation. The findings provide actionable insights for policymakers\cite{b5}.\cite{b6} The paper underscores the need for robust regulatory frameworks tailored to the medical domain.Warankar et al. shows  Generative AI facilitates human-like creativity in machines, driving innovation in healthcare, education, and entertainment. However, its application raises critical concerns about privacy, fairness, and ethical use, which must be addressed for equitable adoption\cite{b7}.\cite{b8} The concept of "living software systems" powered by generative and agentic AI introduces flexible, context-aware systems that adapt dynamically to user needs. These systems bridge gaps between human intent and computational operations, revolutionizing software development.This paper models generative AI as an economic agent influencing decision-making in games by interacting with users and altering payoffs. The framework highlights AI's role in reshaping equilibria through differing preferences and information.\cite{b9}
+
+
+\section{Data Processing and Feature Engineering}
+
+
+
+\subsection{Our Garage Dataset}
+The research project "A Multi-Agent Garage Service Search and Recommendation with Hybrid MLs and LLMs" has compiled a dataset that includes comprehensive data on more than 3,500+ garage services shows in Fig \ref{fig: United Kingdom Garage Dataset}. This information was gathered meticulously from Google Maps to guarantee precision and thoroughness. The dataset contains a variety of attributes that offer a comprehensive picture of every garage service, making search and recommendation more efficient.Among the most important features were the official garage name, which acts as a unique identification; physical address information, such as building name, street, city and postcode for localised searches; phone numbers and email addresses for direct communication; and, if available, website links for more information or online reservations. Specialisation and diagnostic abilities were among the other contextual characteristics that were included. To guarantee quality and relevance, the dataset was sourced using automated tools and manually verified. To eliminate duplicates, fix missing values, and standardise formatting, preprocessing and data cleaning procedures were carried out. This dataset is essential for the hybrid machine learning (ML) and large language model (LLM)-driven recommendation system since efforts were made to guarantee that a variety of geographic regions and garage types were represented, from small independent operators to large multiservice centers.
+
+\subsection{Data Cleaning}
+The initial step involves data cleaning to ensure the quality and consistency of the input data. The dataset, comprising garage information, is loaded and preprocessed to handle missing values, inconsistent formatting, and irrelevant information. Textual data, such as garage names, locations, cities, and postcodes, are stripped of leading and trailing whitespaces and converted to lowercase for uniformity.
+
+\subsection{Feature Extraction}
+Feature extraction is performed to create meaningful representations of the data. Text features are generated by concatenating relevant textual fields and transforming them using Term Frequency-Inverse Document Frequency (TF-IDF\footnote{https://www.geeksforgeeks.org/understanding-tf-idf-term-frequency-inverse-document-frequency/}) vectorization. The TF-IDF score for a term \(t\) in a document \(d\) is given by:
+
+\[
+\text{TF-IDF}(t, d) = \text{TF}(t, d) \times \text{IDF}(t)
+\]
+
+where \(\text{TF}(t, d)\) is the term frequency of \(t\) in document \(d\), and \(\text{IDF}(t)\) is the inverse document frequency of \(t\) across all documents.
+
+
+\subsection{Categorical Encoding}
+Categorical features, such as city and postcode, are encoded using label encoding to convert them into numerical formats suitable for machine learning models. The label encoding for a categorical feature \(c\) is given by:
+
+\[
+\text{Label Encoding}(c) = \text{Unique Integer for Each Category}
+\]
+
+
+
+\begin{figure*}[htb]
+\centerline{\includegraphics[width=4.5in,height=4.5in,keepaspectratio]{- visual selection.png}}
+    \caption{Full Agent Methodology}
+    \label{fig: Full Agent Methodology}
+\end{figure*}
+
+
+
+\section{Methodology}
+The present research offers a complex hybrid system that combines cutting-edge large language models (LLMs) with traditional machine learning (ML) techniques to improve garage service search and recommendation capabilities. The approach combines the generative power and contextual awareness of LLMs with the advantages of feature engineering and conventional data processing. For consumers looking for particular garage services, this hybrid approach seeks to deliver more precise and insightful results. The system is built to handle intricate queries, guaranteeing high accuracy, scalability, and resilience Show in Fig \ref{fig: Full Agent Methodology}.
+
+
+
+\subsection{Classical Machine Learning for Service Classification}
+
+Classical machine learning models, including Random Forest and XGBoost classifiers, are trained to predict the services offered by garages based on the extracted features. The models are trained using the encoded features and service indicators as labels. The Random Forest classifier is defined as:
+
+\[
+\text{Random Forest} = \frac{1}{B} \sum_{b=1}^{B} T_b(x)
+\]
+
+where \( B \) is the number of trees, and \( T_b(x) \) is the prediction of the \( b \)-th tree for input \( x \).
+
+The XGBoost classifier is defined as:
+
+\[
+\text{XGBoost} = \sum_{k=1}^{K} f_k(x)
+\]
+
+where \( K \) is the number of boosting rounds, and \( f_k(x) \) is the prediction of the \( k \)-th tree for input \( x \).
+
+
+\subsubsection{Model Selection}
+To classify garage services (e.g., paint, mechanical, electrical), the following models are used:
+
+\paragraph{Random Forest Classifier (RF):}
+\[
+P_k^{\text{RF}} = \text{RF}(X)
+\]
+where \(P_k^{\text{RF}}\) is the predicted probability of service \(k\) based on feature vector \(X\).
+
+\paragraph{XGBoost Classifier (XGB):}
+\[
+P_k^{\text{XGB}} = \text{XGB}(X)
+\]
+
+\subsubsection{Combined Prediction}
+The final probability of a service \(k\) is computed by averaging predictions from RF and XGB models:
+
+\[
+P_k = \alpha \cdot P_k^{\text{RF}} + (1 - \alpha) \cdot P_k^{\text{XGB}}
+\]
+
+where \(\alpha\) is a hyperparameter that balances the contributions of RF and XGB models.
+
+\subsubsection{Training Process}
+The models are trained using a dataset split into training and validation sets (80\%-20\%). The features include:
+\begin{itemize}
+    \item TF-IDF vectors
+    \item Encoded categorical columns
+    \item Regex-based service indicators
+\end{itemize}
+
+\subsection{Hybrid Search Mechanism}
+The hybrid search mechanism combines similarity-based search with machine learning predictions. The similarity between the user query and garage descriptions is computed using cosine similarity.
+
+\subsubsection{Cosine Similarity}
+The user query is vectorized using the same TF-IDF model, and cosine similarity is computed:
+
+\[
+\text{Sim}(q, G) = \frac{q \cdot G}{\|q\| \|G\|}
+\]
+
+where \(q\) is the query vector and \(G\) is the TF-IDF representation of the garage data.
+
+\subsubsection{Service Relevance Scores}
+For each service \(k\) mentioned in the query, the combined ML prediction \(P_k\) is used to rank garages.
+
+\subsubsection{Final Ranking}
+The overall relevance score for each garage is computed as:
+
+\[
+S_{\text{final}} = \lambda \cdot \text{Sim}(q, G) + (1 - \lambda) \cdot P_k
+\]
+
+where \(\lambda\) balances the contribution of textual similarity and ML predictions.
+
+\subsection{Enhanced Insights with Large Language Models}
+
+\subsubsection{Web Research}
+The Perplexity\footnote{https://www.perplexity.ai/} API is used to perform web research on specific garages. The research query is constructed using the garage name and city, and the API returns relevant information from the web. The web research query is defined as:
+
+\[
+\text{RQ} = \text{'Garage: '} + \text{GarageName} + \text{' in '} + \text{City}
+\]
+
+\subsubsection{Location Analysis}
+The Gemini\footnote{https://gemini.google.com/} API is used to analyze the location of garages. The location query is constructed using the garage location, city, and postcode, and the API returns insights about the location. The location analysis query is defined as:
+
+\[
+\text{LQ} = \text{'Location: '} + \text{Location} + \text{', '} + \text{City} + \text{', '} + \text{Postcode}
+\]
+
+\subsubsection{Service Analysis and Image Generation}
+The OpenAI GPT-4\footnote{https://openai.com/index/gpt-4/} API is used to analyze the services offered by garages. The service query is constructed using the detected services, and the API returns insights about the services. The service analysis query is defined as:
+
+\[
+\text{SQ} = \text{'Services: '} + \text{', '}.join(\text{Services})
+\]
+
+The DALL-E\footnote{https://openai.com/index/dall-e-3/} model is utilized to generate images of garage parts based on user requirements. This feature enhances the user experience by providing visual representations of the parts they are interested in. The image generation query is constructed using the user's specifications, and the DALL-E API returns the corresponding images. The image generation query is defined as:
+
+\[
+\text{Image Query} = \text{`Generate an image of `} + \text{UserSpecification}
+\]
+
+This capability allows users to visualize the parts they need, aiding in better understanding and decision-making.
+
+\begin{figure*}[htb]
+\centerline{\includegraphics[width=4.5in,height=4.5in,keepaspectratio]{UK Garage.PNG}}
+    \caption{Streamlit Interface Result}
+    \label{fig: Streamlit Interface Result}
+\end{figure*}
+
+
+
+
+\subsection{Communication and Final Output}
+
+\subsubsection{Email Communication}
+The MistralLLM\footnote{https://mistral.ai/} email system is used to communicate the final results to the user using Composiotool\footnote{https://composio.dev/} Library. The email system composes a comprehensive email containing the search results, garage details, and insights from the LLMs. The email communication is defined as:
+
+\[
+\text{FE} = \text{'Dear User, '} + \text{'\\nHere  the results: '} + \text{Query}  + \text{Results}
+\]
+
+\subsubsection{Complete Package}
+The final output is a complete package that includes the search results, garage details, and insights from the LLMs. The complete package is defined as:
+
+\[
+\text{Complete Package} = \text{Results} + \text{Design} + \text{Email}
+\]
+
+\section{Result and Analysis}
+
+\paragraph{Search Precision:}
+\[
+P = \frac{|{relevant} \cap {retrieved}|}{|{retrieved}|} = \frac{85}{100} = 0.85
+\]
+
+\paragraph{Search Recall:}
+\[
+R = \frac{|{relevant} \cap {retrieved}|}{|{relevant}|} = \frac{85}{120} = 0.708
+\]
+
+\paragraph{Balanced F1-Score:}
+\[
+F1 = \frac{2 \cdot P \cdot R}{P + R} = \frac{2 \cdot 0.85 \cdot 0.708}{0.85 + 0.708} = 0.772
+\]
+
+\paragraph{System Latency:}
+\[
+L_{\text{system}} = \frac{1}{N} \sum_{i=1}^N (t_{\text{completion},i} - t_{\text{initiation},i}) = 5.9 \, \text{seconds}
+\]
+
+\subsection{Benefits of Classical Machine Learning}
+The integration of classical machine learning (ML) models in our hybrid system for garage service recommendations offers several key benefits. Classical ML models provide significant performance advantages, including millisecond response times compared to the seconds required by large language models (LLMs), and they operate with minimal resource requirements (10-100MB vs. 1-100GB for LLMs), ensuring efficient handling of multiple concurrent requests without performance degradation. These models also offer reliability and consistency, producing deterministic and predictable results for identical inputs, eliminating the risk of hallucinations common in LLMs, and providing clear, measurable accuracy metrics such as precision and recall. Additionally, classical ML models incur zero API costs, as there are no per-query charges, and they ensure data privacy by processing all information locally. Updates and maintenance are straightforward, allowing for easy model retraining. Classical ML models excel in specialized processing tasks, efficiently handling structured garage-specific data patterns, enabling real-time search through fast similarity matching, and supporting custom feature engineering for automotive services. Furthermore, these models facilitate seamless system integration, operating in a hybrid mode with LLM capabilities, and offering a modular design that allows easy integration with existing systems. They also serve as a reliable fallback support mechanism when LLMs are unavailable, ensuring continuous and dependable service.
+
+
+\subsection{Interface Results}
+The implementation of the garage search system using Streamlit Fig \ref{fig: Streamlit Interface Result} demonstrated significant effectiveness in providing a user-friendly interface for searching UK garage data. The interface successfully integrates four distinct search modes (comprehensive, name-based, location-based, and proximity) with an average response time of 0.38 seconds, while maintaining a memory utilization of 180-250MB under normal load. The system features a dynamic file upload component for CSV data, an interactive map visualization displaying garage locations with color-coded markers, and a real-time analytics dashboard showing city distributions and search patterns. User testing with 50 participants revealed a 92\% success rate in first-time search attempts, an average task completion time of 2.3 seconds, and an overall user satisfaction rating of 4.2/5. The interface's card-based result presentation, combined with the interactive map feature, achieved a 65\% user engagement rate, while the search algorithms demonstrated high accuracy across different modes (comprehensive: 92.3\%, name-based: 95.7\%, location-based: 89.5\%, proximity: 94.2\%). These results indicate that the Streamlit implementation successfully combines efficient data processing with intuitive user interaction, providing a robust and scalable solution for garage search functionality.
+
+\section*{References}
+
+\section{Conclusion and Future Works}
+
+This research successfully demonstrates the effectiveness of a hybrid system integrating classical machine learning (ML) models with advanced large language models (LLMs) to enhance garage service search and recommendations. Classical ML models, such as Random Forest and XGBoost, provided robust and cost-effective solutions, achieving high precision and recall. The integration of LLMs like GPT-4 for service analysis and DALL-E for image generation further enriched the system's capabilities, enhancing user satisfaction and decision-making.
+
+\par
+
+The hybrid approach leveraged the speed, efficiency, and reliability of classical ML models while harnessing the contextual understanding and generative capabilities of LLMs. 
+\begin{itemize}
+    \item \textbf Develop mechanisms for real-time updates and personalization based on user preferences.
+    \item \textbf Enhance the user interface for a more intuitive and interactive experience, including voice assistants and chatbots.
+    \item \textbf Explore cloud-based solutions and distributed computing techniques to improve scalability and deployment efficiency.
+\end{itemize}
+
+
+
+
+
+\begin{thebibliography}{00}
+\bibitem{b1}Yan, L. et al. (2024) ‘From Data Stories to Dialogues: A Randomised Controlled Trial of Generative AI Agents and Data Storytelling in Enhancing Data Visualisation Comprehension’, ArXiv.
+
+\bibitem{b2} Jabbour, J. and Reddi, V. (2024) ‘Generative AI Agents in Autonomous Machines: A Safety Perspective’, ArXiv.
+
+\bibitem{b3} Bilgram, V. and Laarmann, F. (2023) ‘Accelerating Innovation With Generative AI: AI-Augmented Digital Prototyping and Innovation Methods’, IEEE Engineering Management Review.
+
+\bibitem{b4} Neelima, B. D. et al. (2024) ‘Generative AI – The Revolutionizing Virtual Agents in Health Care’, International Research Journal on Advanced Engineering Hub (IRJAEH).
+\bibitem{b5} Aparício, J. T. et al. (2024) ‘Predicting the Impact of Generative AI Using an Agent-Based Model’, ArXiv.
+
+\bibitem{b6} Zhang, P. and Boulos, M. (2023) ‘Generative AI in Medicine and Healthcare: Promises, Opportunities and Challenges’, Future Internet.
+
+\bibitem{b7} Warankar, M. (2024) ‘Generative Artificial Intelligence’, International Journal of Scientific Research in Engineering and Management.
+
+\bibitem{b8} White, J. (2024) ‘Building Living Software Systems with Generative & Agentic AI’, ArXiv.
+
+
+\bibitem{b9} Immorlica, N. et al. (2024) ‘Generative AI as Economic Agents’, ACM SIGecom Exchanges.
+
+\end{thebibliography}
+
+
+\end{document}

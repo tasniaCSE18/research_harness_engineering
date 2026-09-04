@@ -1,0 +1,84 @@
+{
+  "gts": [
+    {
+      "company": "WAHIN HARDWARE SDN BHD",
+      "date": "04/12/17",
+      "address": "425, JALAN PAHANG, SETAPAK, 53000 KUALA LUMPUR.",
+      "total": "42.40"
+    },
+    {
+      "company": "ONE ONE THREE SEAFOOD RESTAURANT SDN BHD",
+      "date": "05-06-2018",
+      "address": "NO. 1, TAMAN SRI DENGKIL, JALAN AIR HITAM 43800 DENGKIL, SELANGOR.",
+      "total": "52.00"
+    },
+    {
+      "company": "KHIAM AIK CHAN SDN BHD",
+      "date": "25/09/2017",
+      "address": "NO. 76, JALAN SS15/4B, 47500 SUBANG JAYA, SELANGOR D.E.",
+      "total": "28.40"
+    }
+  ],
+  "preds": {
+    "A_baseline": [
+      {
+        "company": "",
+        "date": "",
+        "address": "",
+        "total": ""
+      },
+      {
+        "company": "",
+        "date": "",
+        "address": "",
+        "total": ""
+      },
+      {
+        "company": "",
+        "date": "",
+        "address": "",
+        "total": ""
+      }
+    ],
+    "B_confidence": [
+      {
+        "company": "",
+        "date": "",
+        "address": "",
+        "total": ""
+      },
+      {
+        "company": "",
+        "date": "",
+        "address": "",
+        "total": ""
+      },
+      {
+        "company": "",
+        "date": "",
+        "address": "",
+        "total": ""
+      }
+    ],
+    "C_selfcorrect": [
+      {
+        "company": "",
+        "date": "",
+        "address": "",
+        "total": ""
+      },
+      {
+        "company": "",
+        "date": "",
+        "address": "",
+        "total": ""
+      },
+      {
+        "company": "",
+        "date": "",
+        "address": "",
+        "total": ""
+      }
+    ]
+  }
+}
