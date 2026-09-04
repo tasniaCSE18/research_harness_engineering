@@ -3,7 +3,8 @@
     "model": "gemini-2.5-flash",
     "n_samples": 3,
     "conf_threshold": 0.5,
-    "note": "smoke test, 3 docs, pre-quota-exhaustion"
+    "workers": 3,
+    "n_docs": 20
   },
   "records": [
     {
@@ -34,13 +35,17 @@
         "total": "42.40"
       },
       "conf": {
-        "company": 0.67,
-        "date": 0.67,
-        "address": 0.67,
-        "total": 0.67
+        "company": 1.0,
+        "date": 1.0,
+        "address": 1.0,
+        "total": 1.0
       },
       "flagged": [],
-      "n_calls": 4
+      "n_calls": 4,
+      "errors": {
+        "A": null,
+        "samples": []
+      }
     },
     {
       "idx": 1,
@@ -70,13 +75,17 @@
         "total": "52.00"
       },
       "conf": {
-        "company": 0.67,
-        "date": 0.67,
-        "address": 0.67,
-        "total": 0.67
+        "company": 1.0,
+        "date": 1.0,
+        "address": 1.0,
+        "total": 1.0
       },
       "flagged": [],
-      "n_calls": 4
+      "n_calls": 4,
+      "errors": {
+        "A": null,
+        "samples": []
+      }
     },
     {
       "idx": 2,
@@ -106,10 +115,378 @@
         "total": "28.40"
       },
       "conf": {
-        "company": 0.33,
-        "date": 0.33,
-        "address": 0.33,
-        "total": 0.33
+        "company": 1.0,
+        "date": 1.0,
+        "address": 1.0,
+        "total": 1.0
+      },
+      "flagged": [],
+      "n_calls": 4,
+      "errors": {
+        "A": null,
+        "samples": []
+      }
+    },
+    {
+      "idx": 3,
+      "file": "X51007339097.jpg",
+      "gt": {
+        "company": "SANYU STATIONERY SHOP",
+        "date": "10/04/2017",
+        "address": "NO. 31G&33G, JALAN SETIA INDAH X ,U13/X 40170 SETIA ALAM",
+        "total": "8.70"
+      },
+      "A": {
+        "company": "SANYU STATIONERY SHOP",
+        "date": "10/04/2017",
+        "address": "NO. 31G&33G, JALAN SETIA INDAH X, U13/X 40170 SETIA ALAM",
+        "total": "8.70"
+      },
+      "B": {
+        "company": "SANYU STATIONERY SHOP",
+        "date": "10/04/2017",
+        "address": "NO. 31G&33G, JALAN SETIA INDAH X, U13/X 40170 SETIA ALAM",
+        "total": "8.70"
+      },
+      "C": {
+        "company": "SANYU STATIONERY SHOP",
+        "date": "10/04/2017",
+        "address": "NO. 31G&33G, JALAN SETIA INDAH X, U13/X 40170 SETIA ALAM",
+        "total": "8.70"
+      },
+      "conf": {
+        "company": 1.0,
+        "date": 1.0,
+        "address": 1.0,
+        "total": 1.0
+      },
+      "flagged": [],
+      "n_calls": 4,
+      "errors": {
+        "A": null,
+        "samples": []
+      }
+    },
+    {
+      "idx": 4,
+      "file": "X51006555780.jpg",
+      "gt": {
+        "company": "GARDENIA BAKERIES (KI ) SDN BHD",
+        "date": "21/07/2017",
+        "address": "LOT 3, JALAN PELABUR 23/1, 40300 SHAH ALAM, SELANGOR.",
+        "total": "33.05"
+      },
+      "A": {
+        "company": "GARDENIA BAKERIES (KL) SDN BHD",
+        "date": "21/07/2017",
+        "address": "Lot 3, Jalan Pelabur 23/1, 40300 Shah Alam, Selangor",
+        "total": "33.05"
+      },
+      "B": {
+        "company": "GARDENIA BAKERIES (KL) SDN BHD",
+        "date": "21/07/2017",
+        "address": "Lot 3, Jalan Pelabur 23/1, 40300 Shah Alam, Selangor",
+        "total": "33.05"
+      },
+      "C": {
+        "company": "GARDENIA BAKERIES (KL) SDN BHD",
+        "date": "21/07/2017",
+        "address": "Lot 3, Jalan Pelabur 23/1, 40300 Shah Alam, Selangor",
+        "total": "33.05"
+      },
+      "conf": {
+        "company": 1.0,
+        "date": 1.0,
+        "address": 1.0,
+        "total": 1.0
+      },
+      "flagged": [],
+      "n_calls": 4,
+      "errors": {
+        "A": null,
+        "samples": []
+      }
+    },
+    {
+      "idx": 5,
+      "file": "X51005757294.jpg",
+      "gt": {
+        "company": "MR. D.I.Y. (M) SDN BHD",
+        "date": "18-03-18",
+        "address": "LOT 1851-A & 1851-B, JALAN KPB 6, KAWASAN PERINDUSTRIAN BALAKONG, 43300 SERI KEMBANGAN, SELANGOR",
+        "total": "10.60"
+      },
+      "A": {
+        "company": "MR. D.I.Y. (M) SDN BHD",
+        "date": "18-03-18",
+        "address": "LOT 1851-A & 1851-B, JALAN KPB 6, KAWASAN PERINDUSTRIAN BALAKONG, 43300 SERI KEMBANGAN, SELANGOR",
+        "total": "RM 10.60"
+      },
+      "B": {
+        "company": "MR. D.I.Y. (M) SDN BHD",
+        "date": "18-03-18",
+        "address": "LOT 1851-A & 1851-B, JALAN KPB 6, KAWASAN PERINDUSTRIAN BALAKONG, 43300 SERI KEMBANGAN, SELANGOR",
+        "total": "RM 10.60"
+      },
+      "C": {
+        "company": "MR. D.I.Y. (M) SDN BHD",
+        "date": "18-03-18",
+        "address": "LOT 1851-A & 1851-B, JALAN KPB 6, KAWASAN PERINDUSTRIAN BALAKONG, 43300 SERI KEMBANGAN, SELANGOR",
+        "total": "RM 10.60"
+      },
+      "conf": {
+        "company": 0.6666666666666666,
+        "date": 0.6666666666666666,
+        "address": 0.6666666666666666,
+        "total": 0.6666666666666666
+      },
+      "flagged": [],
+      "n_calls": 4,
+      "errors": {
+        "A": null,
+        "samples": [
+          "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. "
+        ]
+      }
+    },
+    {
+      "idx": 6,
+      "file": "X51006008197.jpg",
+      "gt": {
+        "company": "RELAIS TOTAL OULMES",
+        "date": "30/03/2018",
+        "address": "AUTOROUTE RABAT MEKNES 15000 KHEMISSET",
+        "total": "56.00"
+      },
+      "A": {
+        "company": "",
+        "date": "",
+        "address": "",
+        "total": ""
+      },
+      "B": {
+        "company": "RELAIS TOTAL OULMES",
+        "date": "30/03/2018",
+        "address": "AUTOROUTE RABAT MEKNES 15000 KHEMISSET",
+        "total": "56.00 DH"
+      },
+      "C": {
+        "company": "RELAIS TOTAL OULMES",
+        "date": "30/03/2018",
+        "address": "AUTOROUTE RABAT MEKNES 15000 KHEMISSET",
+        "total": "56.00 DH"
+      },
+      "conf": {
+        "company": 1.0,
+        "date": 1.0,
+        "address": 1.0,
+        "total": 1.0
+      },
+      "flagged": [],
+      "n_calls": 4,
+      "errors": {
+        "A": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. ",
+        "samples": []
+      }
+    },
+    {
+      "idx": 7,
+      "file": "X51005711445.jpg",
+      "gt": {
+        "company": "RESTORAN WAN SHENG",
+        "date": "12-03-2018",
+        "address": "NO.2, JALAN TEMENGGUNG 19/9, SEKSYEN 9, BANDAR MAHKOTA CHERAS, 43200 CHERAS, SELANGOR",
+        "total": "7.00"
+      },
+      "A": {
+        "company": "",
+        "date": "",
+        "address": "",
+        "total": ""
+      },
+      "B": {
+        "company": "RESTORAN WAN SHENG",
+        "date": "12-03-2018",
+        "address": "No.2, Jalan Temenggung 19/9, Seksyen 9, Bandar Mahkota Cheras, 43200 Cheras, Selangor",
+        "total": "7.00"
+      },
+      "C": {
+        "company": "RESTORAN WAN SHENG",
+        "date": "12-03-2018",
+        "address": "No.2, Jalan Temenggung 19/9, Seksyen 9, Bandar Mahkota Cheras, 43200 Cheras, Selangor",
+        "total": "7.00"
+      },
+      "conf": {
+        "company": 1.0,
+        "date": 1.0,
+        "address": 1.0,
+        "total": 1.0
+      },
+      "flagged": [],
+      "n_calls": 4,
+      "errors": {
+        "A": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. ",
+        "samples": []
+      }
+    },
+    {
+      "idx": 8,
+      "file": "X51007391372.jpg",
+      "gt": {
+        "company": "FY EAGLE ENTERPRISE",
+        "date": "24/05/2018",
+        "address": "NO. 42, JALAN PBS 14/11, TAMAN PERINDUSTRIAN BUKIT SERDANG, 43300 SERI KEMBANGAN, SELANGOR",
+        "total": "52.00"
+      },
+      "A": {
+        "company": "FY EAGLE ENTERPRISE",
+        "date": "24/05/2018",
+        "address": "NO. 42, JALAN PBS 14/11, TAMAN PERINDUSTRIAN BUKIT SERDANG, 43300 SERI KEMBANGAN, SELANGOR",
+        "total": "52.00"
+      },
+      "B": {
+        "company": "FY EAGLE ENTERPRISE",
+        "date": "24/05/2018",
+        "address": "NO. 42, JALAN PBS 14/11, TAMAN PERINDUSTRIAN BUKIT SERDANG, 43300 SERI KEMBANGAN, SELANGOR",
+        "total": "52.00"
+      },
+      "C": {
+        "company": "FY EAGLE ENTERPRISE",
+        "date": "24/05/2018",
+        "address": "NO. 42, JALAN PBS 14/11, TAMAN PERINDUSTRIAN BUKIT SERDANG, 43300 SERI KEMBANGAN, SELANGOR",
+        "total": "52.00"
+      },
+      "conf": {
+        "company": 0.6666666666666666,
+        "date": 0.6666666666666666,
+        "address": 0.6666666666666666,
+        "total": 0.6666666666666666
+      },
+      "flagged": [],
+      "n_calls": 4,
+      "errors": {
+        "A": null,
+        "samples": [
+          "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. "
+        ]
+      }
+    },
+    {
+      "idx": 9,
+      "file": "X51005757324.jpg",
+      "gt": {
+        "company": "MR. D.I.Y. (M) SDN BHD",
+        "date": "25-03-18",
+        "address": "LOT 1851-A & 1851-B, JALAN KPB 6, KAWASAN PERINDUSTRIAN BALAKONG, 43300 SERI KEMBANGAN, SELANGOR",
+        "total": "50.80"
+      },
+      "A": {
+        "company": "MR. D.I.Y. (M) SDN BHD",
+        "date": "25/03/2018",
+        "address": "LOT 1851-A & 1851-B, JALAN KPB 6, KAWASAN PERINDUSTRIAN BALAKONG, 43300 SERI KEMBANGAN, SELANGOR",
+        "total": "RM 50.80"
+      },
+      "B": {
+        "company": "MR. D.I.Y. (M) SDN BHD",
+        "date": "25-03-18",
+        "address": "LOT 1851-A & 1851-B, JALAN KPB 6, KAWASAN PERINDUSTRIAN BALAKONG, 43300 SERI KEMBANGAN, SELANGOR",
+        "total": "RM 50.80"
+      },
+      "C": {
+        "company": "MR. D.I.Y. (M) SDN BHD",
+        "date": "25-03-18",
+        "address": "LOT 1851-A & 1851-B, JALAN KPB 6, KAWASAN PERINDUSTRIAN BALAKONG, 43300 SERI KEMBANGAN, SELANGOR",
+        "total": "RM 50.80"
+      },
+      "conf": {
+        "company": 0.6666666666666666,
+        "date": 0.6666666666666666,
+        "address": 0.6666666666666666,
+        "total": 0.6666666666666666
+      },
+      "flagged": [],
+      "n_calls": 4,
+      "errors": {
+        "A": null,
+        "samples": [
+          "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. "
+        ]
+      }
+    },
+    {
+      "idx": 10,
+      "file": "X51005301661.jpg",
+      "gt": {
+        "company": "LIGHTROOM GALLERY SDN BHD",
+        "date": "20/12/2017",
+        "address": "NO: 28, JALAN ASTANA 1C, BANDAR BUKIT RAJA, 41050 KLANG SELANGOR D.E, MALAYSIA",
+        "total": "73.00"
+      },
+      "A": {
+        "company": "LIGHTROOM GALLERY SDN BHD",
+        "date": "20/12/2017",
+        "address": "No: 28, JALAN ASTANA 1C, BANDAR BUKIT RAJA, 41050 KLANG SELANGOR D. E, MALAYSIA",
+        "total": "73.00"
+      },
+      "B": {
+        "company": "LIGHTROOM GALLERY SDN BHD",
+        "date": "20/12/2017",
+        "address": "No: 28, JALAN ASTANA 1C, BANDAR BUKIT RAJA, 41050 KLANG SELANGOR D. E, MALAYSIA",
+        "total": "73.00"
+      },
+      "C": {
+        "company": "LIGHTROOM GALLERY SDN BHD",
+        "date": "20/12/2017",
+        "address": "No: 28, JALAN ASTANA 1C, BANDAR BUKIT RAJA, 41050 KLANG SELANGOR D. E, MALAYSIA",
+        "total": "73.00"
+      },
+      "conf": {
+        "company": 0.6666666666666666,
+        "date": 0.6666666666666666,
+        "address": 0.6666666666666666,
+        "total": 0.6666666666666666
+      },
+      "flagged": [],
+      "n_calls": 4,
+      "errors": {
+        "A": null,
+        "samples": [
+          "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. "
+        ]
+      }
+    },
+    {
+      "idx": 11,
+      "file": "X51006912960.jpg",
+      "gt": {
+        "company": "DE MAXIMUM THAI EXPRESS SDN BHD",
+        "date": "17/05/2018",
+        "address": "BLK 2, UNIT G1 & G2, BESTARI TERRACE, LOT PTD 182908 & PTD 143216, JALAN DANGA, TAMAN NUSA BESTARI, 81300",
+        "total": "30.70"
+      },
+      "A": {
+        "company": "",
+        "date": "",
+        "address": "",
+        "total": ""
+      },
+      "B": {
+        "company": "",
+        "date": "",
+        "address": "",
+        "total": ""
+      },
+      "C": {
+        "company": "",
+        "date": "",
+        "address": "",
+        "total": ""
+      },
+      "conf": {
+        "company": 0.0,
+        "date": 0.0,
+        "address": 0.0,
+        "total": 0.0
       },
       "flagged": [
         "company",
@@ -117,7 +494,407 @@
         "address",
         "total"
       ],
-      "n_calls": 5
+      "n_calls": 5,
+      "errors": {
+        "A": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. ",
+        "samples": [
+          "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. ",
+          "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. ",
+          "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. "
+        ]
+      }
+    },
+    {
+      "idx": 12,
+      "file": "X51005361900.jpg",
+      "gt": {
+        "company": "TEO HENG STATIONERY & BOOKS",
+        "date": "23/01/2018",
+        "address": "NO.53,JALAN BESAR,45600 BATANG BERJUNTAI SELANGOR DARUL EHSAN",
+        "total": "18.00"
+      },
+      "A": {
+        "company": "",
+        "date": "",
+        "address": "",
+        "total": ""
+      },
+      "B": {
+        "company": "",
+        "date": "",
+        "address": "",
+        "total": ""
+      },
+      "C": {
+        "company": "",
+        "date": "",
+        "address": "",
+        "total": ""
+      },
+      "conf": {
+        "company": 0.0,
+        "date": 0.0,
+        "address": 0.0,
+        "total": 0.0
+      },
+      "flagged": [
+        "company",
+        "date",
+        "address",
+        "total"
+      ],
+      "n_calls": 5,
+      "errors": {
+        "A": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. ",
+        "samples": [
+          "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. ",
+          "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. ",
+          "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. "
+        ]
+      }
+    },
+    {
+      "idx": 13,
+      "file": "X51009453801.jpg",
+      "gt": {
+        "company": "GL HANDICRAFT & TAIL ORING",
+        "date": "20/03/2018",
+        "address": "19, JALAN KANCIL, OFF JALAN PUDU, 55100 KUALA LUMPUR MALAYSIA",
+        "total": "102.00"
+      },
+      "A": {
+        "company": "",
+        "date": "",
+        "address": "",
+        "total": ""
+      },
+      "B": {
+        "company": "",
+        "date": "",
+        "address": "",
+        "total": ""
+      },
+      "C": {
+        "company": "",
+        "date": "",
+        "address": "",
+        "total": ""
+      },
+      "conf": {
+        "company": 0.0,
+        "date": 0.0,
+        "address": 0.0,
+        "total": 0.0
+      },
+      "flagged": [
+        "company",
+        "date",
+        "address",
+        "total"
+      ],
+      "n_calls": 5,
+      "errors": {
+        "A": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. ",
+        "samples": [
+          "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. ",
+          "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. ",
+          "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. "
+        ]
+      }
+    },
+    {
+      "idx": 14,
+      "file": "X51005719899.jpg",
+      "gt": {
+        "company": "LITTLE CRAVINGS SDN BHD",
+        "date": "18-03-2018",
+        "address": "HQ: 7, JLN SS21/34, 47400 PJ",
+        "total": "RM53.60"
+      },
+      "A": {
+        "company": "",
+        "date": "",
+        "address": "",
+        "total": ""
+      },
+      "B": {
+        "company": "",
+        "date": "",
+        "address": "",
+        "total": ""
+      },
+      "C": {
+        "company": "",
+        "date": "",
+        "address": "",
+        "total": ""
+      },
+      "conf": {
+        "company": 0.0,
+        "date": 0.0,
+        "address": 0.0,
+        "total": 0.0
+      },
+      "flagged": [
+        "company",
+        "date",
+        "address",
+        "total"
+      ],
+      "n_calls": 5,
+      "errors": {
+        "A": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. ",
+        "samples": [
+          "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. ",
+          "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. ",
+          "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. "
+        ]
+      }
+    },
+    {
+      "idx": 15,
+      "file": "X51005711452.jpg",
+      "gt": {
+        "company": "GERBANG ALAF RESTAURANTS SDN BHD",
+        "date": "21/03/2018",
+        "address": "LEVEL 6, BANGUNAN TH, DAMANSARA UPTOWN3 NO.3, JALAN SS21/39, 47400 PETALING JAYA SELANGOR",
+        "total": "25.40"
+      },
+      "A": {
+        "company": "",
+        "date": "",
+        "address": "",
+        "total": ""
+      },
+      "B": {
+        "company": "",
+        "date": "",
+        "address": "",
+        "total": ""
+      },
+      "C": {
+        "company": "",
+        "date": "",
+        "address": "",
+        "total": ""
+      },
+      "conf": {
+        "company": 0.0,
+        "date": 0.0,
+        "address": 0.0,
+        "total": 0.0
+      },
+      "flagged": [
+        "company",
+        "date",
+        "address",
+        "total"
+      ],
+      "n_calls": 5,
+      "errors": {
+        "A": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. ",
+        "samples": [
+          "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. ",
+          "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. ",
+          "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. "
+        ]
+      }
+    },
+    {
+      "idx": 16,
+      "file": "X51008114262.jpg",
+      "gt": {
+        "company": "99 SPEED MART S/B",
+        "date": "05-05-18",
+        "address": "LOT P.T. 2811, JALAN ANGSA, TAMAN BERKELEY 41150 KLANG, SELANGOR 1237-TMN INDAH PERDANA",
+        "total": "137.15"
+      },
+      "A": {
+        "company": "",
+        "date": "",
+        "address": "",
+        "total": ""
+      },
+      "B": {
+        "company": "",
+        "date": "",
+        "address": "",
+        "total": ""
+      },
+      "C": {
+        "company": "",
+        "date": "",
+        "address": "",
+        "total": ""
+      },
+      "conf": {
+        "company": 0.0,
+        "date": 0.0,
+        "address": 0.0,
+        "total": 0.0
+      },
+      "flagged": [
+        "company",
+        "date",
+        "address",
+        "total"
+      ],
+      "n_calls": 5,
+      "errors": {
+        "A": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. ",
+        "samples": [
+          "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. ",
+          "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. ",
+          "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. "
+        ]
+      }
+    },
+    {
+      "idx": 17,
+      "file": "X51006414714.jpg",
+      "gt": {
+        "company": "THE TOAST F&B SDN BHD",
+        "date": "08/04/2018",
+        "address": "LOT 2110&2111 JALAN PERMAS UTARA BANDAR BARU PERMAS 81750 JOHOR BAHRU JOHOR",
+        "total": "18.90"
+      },
+      "A": {
+        "company": "",
+        "date": "",
+        "address": "",
+        "total": ""
+      },
+      "B": {
+        "company": "",
+        "date": "",
+        "address": "",
+        "total": ""
+      },
+      "C": {
+        "company": "",
+        "date": "",
+        "address": "",
+        "total": ""
+      },
+      "conf": {
+        "company": 0.0,
+        "date": 0.0,
+        "address": 0.0,
+        "total": 0.0
+      },
+      "flagged": [
+        "company",
+        "date",
+        "address",
+        "total"
+      ],
+      "n_calls": 5,
+      "errors": {
+        "A": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. ",
+        "samples": [
+          "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. ",
+          "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. ",
+          "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. "
+        ]
+      }
+    },
+    {
+      "idx": 18,
+      "file": "X51007339658.jpg",
+      "gt": {
+        "company": "AIK HUAT HARDWARE ENTERPRISE (SETIA ALAM) SDN BHD",
+        "date": "04/09/2017",
+        "address": "NO. 17-G, JALAN SETIA INDAH (X) U13/X, SETIA ALAM, SEKSYEN U13, 40170 SHAH ALAM,",
+        "total": "28.00"
+      },
+      "A": {
+        "company": "",
+        "date": "",
+        "address": "",
+        "total": ""
+      },
+      "B": {
+        "company": "",
+        "date": "",
+        "address": "",
+        "total": ""
+      },
+      "C": {
+        "company": "",
+        "date": "",
+        "address": "",
+        "total": ""
+      },
+      "conf": {
+        "company": 0.0,
+        "date": 0.0,
+        "address": 0.0,
+        "total": 0.0
+      },
+      "flagged": [
+        "company",
+        "date",
+        "address",
+        "total"
+      ],
+      "n_calls": 5,
+      "errors": {
+        "A": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. ",
+        "samples": [
+          "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. ",
+          "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. ",
+          "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. "
+        ]
+      }
+    },
+    {
+      "idx": 19,
+      "file": "X51006387932.jpg",
+      "gt": {
+        "company": "BILLION SIX ENTERPRISE",
+        "date": "04/05/2017",
+        "address": "NO 3, JALAN TAMAN JASA 2, SECTION U6, 40150 SHAH ALAM.",
+        "total": "12.00"
+      },
+      "A": {
+        "company": "",
+        "date": "",
+        "address": "",
+        "total": ""
+      },
+      "B": {
+        "company": "",
+        "date": "",
+        "address": "",
+        "total": ""
+      },
+      "C": {
+        "company": "",
+        "date": "",
+        "address": "",
+        "total": ""
+      },
+      "conf": {
+        "company": 0.0,
+        "date": 0.0,
+        "address": 0.0,
+        "total": 0.0
+      },
+      "flagged": [
+        "company",
+        "date",
+        "address",
+        "total"
+      ],
+      "n_calls": 5,
+      "errors": {
+        "A": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. ",
+        "samples": [
+          "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. ",
+          "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. ",
+          "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. "
+        ]
+      }
     }
   ]
 }
